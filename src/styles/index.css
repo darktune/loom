@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#1B1717] text-[#FFFAEF] min-h-screen font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Glassmorphism Luxury Utilities */
+.glass-panel {
+  background: rgba(27, 23, 23, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 169, 110, 0.25);
+}
+
+.glass-modal {
+  background: rgba(18, 15, 13, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(91, 15, 24, 0.4) 0%, rgba(27, 23, 23, 0.7) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(201, 169, 110, 0.5);
+  box-shadow: 0 10px 30px rgba(128, 0, 32, 0.3);
+}
+
+.glass-obsidian-gold {
+  background: linear-gradient(180deg, rgba(18, 15, 13, 0.9) 0%, rgba(91, 15, 24, 0.3) 100%);
+  border: 1px solid rgba(201, 169, 110, 0.3);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1B1717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #800020;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A96E;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
