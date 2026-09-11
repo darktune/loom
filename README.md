@@ -1,88 +1,131 @@
-# 🧵 LOOM
+# 🧵 LOOM — 3D Virtual Atelier & Bespoke Fashion
 
 **Where Fashion Meets Dimension**
 
-> A minimalist 3D fashion e-commerce platform that replaces static product photos with interactive 3D garments. Built for the Kora Hackathon.
-
-![Status](https://img.shields.io/badge/Status-In%20Development-800020)
-![Hackathon](https://img.shields.io/badge/Kora%20Hackathon-June%202026-C9A96E)
+> A minimalist 3D fashion e-commerce showroom replacing static product photos with interactive 3D WebGL garments, live MediaPipe camera body scanning, custom native design studio, and Payaza payment integration. Built for the Kora Hackathon 2026.
 
 ---
 
-## 🎯 The Vision
+## 🎯 Project Overview & Architecture Alignment
 
-**Loom** is a premium 3D digital showroom that makes local fashion accessible globally. Customers can:
+**LOOM** is a luxury digital showroom that brings bespoke African fashion to life in 3D. 
 
-- 🧊 **Rotate & inspect** 3D garments in a museum-style gallery
-- 📏 **Get AI-powered sizing** — enter measurements to scale a 3D mannequin
-- 🎨 **Generate bespoke concepts** — describe your dream garment via text/image prompts
-- 💳 **Checkout securely** — Kora Pay integration with Bespoke Escrow for international trust
-- 💱 **Dynamic currency** — seamless USD/NGN switching
-
-### Flagship Brand: Abraham's Collection
-
----
-
-## 🎨 Design Language
-
-| Color | Hex | Role |
-|-------|-----|------|
-| Burgundy Wine | `#5B0F18` | Primary brand |
-| Cherry Burgundy | `#800020` | CTAs & buttons |
-| Maroon | `#630000` | Hover states |
-| Ivory Cream | `#FFFAEF` | Light backgrounds |
-| Soft Cream | `#F8F1E7` | Card surfaces |
-| Noir Black | `#1B1717` | Deep backgrounds |
-| Gold Foil | `#C9A96E` | Premium accents |
-
-**Typography**: Playfair Display (serif headings) + Inter (body text)
-
-**Aesthetic**: Glassmorphism • Editorial • Museum-Gallery • Minimal • Dark Mode
+### Core Features & User Workflows:
+- 🧊 **3D Showroom Gallery (`ATELIER` Tab)**: Rotate 360°, inspect fabric weaves, view raycaster hotspots, and toggle between bespoke garments or the bare 3D mannequin.
+- 🎨 **Bespoke Native Studio (`STUDIO` Tab)**: Design custom native attire from scratch (Senator Top, Imperial Agbada, Royal Kaftan, Dashiki) with real-time options for fit, color, collar, pockets, and embroidery.
+- 📏 **AI Body Scanning & Sizing Wizard**: Google MediaPipe Pose AI camera body scanning + 3-step measurement wizard to scale the 3D mannequin in real time.
+- 🧵 **Heritage Textile Archive (`TEXTILES` Tab)**: 1200x optical macro lens visualizer and oral history audio archives for heritage fabrics (Aso-Oke, Velvet, Silk).
+- 🤖 **Dual AI Conceptor (`EDITIONS` Tab)**: Primary AI (Google Gemini) + Fallback AI (Groq Llama 3) for synthesizing bespoke design specifications from text prompts.
+- 💳 **Payaza Payment Integration**: Direct, secure e-commerce checkout powered by Payaza (Naira ₦ NGN exclusive currency).
 
 ---
 
-## 🏗️ Tech Stack
+## 🎨 Design Tokens & Aesthetic Standard
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 19 + Vite |
-| 3D Engine | React Three Fiber + Drei + Three.js |
-| Animation | GSAP |
-| Styling | Tailwind CSS |
-| Backend | Node.js + Express |
-| Payments | Kora Pay API |
-| Real-Time | Socket.io |
+| Color Token | Hex | Role / Usage |
+| :--- | :--- | :--- |
+| **Burgundy Wine** | `#5B0F18` | Primary brand backdrop |
+| **Cherry Burgundy** | `#800020` | Primary CTAs & interactive highlights |
+| **Noir Black** | `#1B1717` | Canvas backdrop & dark obsidian glass |
+| **Ivory Cream** | `#FFFAEF` | Headlines & editorial typography contrast |
+| **Soft Cream** | `#F8F1E7` | Input card surfaces |
+| **Gold Foil** | `#C9A96E` | Luxury filigree borders, badges & metallic accents |
 
----
-
-## 📋 Phased Development
-
-### Phase 1 — Foundation
-- 3D Environment (museum lighting, .glb loader, raycaster hotspots)
-- Kora Pay Integration (checkout, dynamic pricing, webhooks)
-
-### Phase 2 — Core UI/UX
-- Glassmorphism design system (white & burgundy)
-- Ghost buttons, slide-in checkout drawer
-- Responsive design
-
-### Phase 3 — Advanced Features
-- AI Sizing Wizard (measurement → mannequin scaling)
-- AI Concept Generator (text/image → garment preview)
-- Real-Time Tailor Collaboration (WebSocket-synced 3D canvas)
+**Typography**: `Playfair Display` (serif headlines) + `Inter` (body & tabular metrics)
 
 ---
 
-## 📂 Project Structure
+## 🔌 Backend API Contracts (For Backend Engineers & Copilots)
+
+All backend engineers and AI copilots MUST adhere strictly to the following API endpoints:
+
+### 1. Payaza Checkout Initialization
+* **Endpoint:** `POST /api/payaza/initialize-transaction`
+* **Request Payload:**
+  ```json
+  {
+    "amount": 520000,
+    "currency": "NGN",
+    "email": "patron@loom.fashion",
+    "fullName": "Bespoke Patron"
+  }
+  ```
+* **Response Payload:**
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "checkoutUrl": "https://checkout.payaza.africa/pay/...",
+      "reference": "PZ_1788894200"
+    }
+  }
+  ```
+
+### 2. Custom Native Order Creation
+* **Endpoint:** `POST /api/orders/create`
+* **Request Payload:**
+  ```json
+  {
+    "garment": {
+      "style": "Senator Top",
+      "fit": "Tailored Fit",
+      "primaryColor": "#5B0F18",
+      "collarStyle": "Mandarin Collar",
+      "pockets": "Double Welt Pocket",
+      "embroidery": "Gold Chest Motif"
+    },
+    "priceNaira": 145000,
+    "customer": { "email": "patron@loom.fashion", "phone": "+2348000000000" }
+  }
+  ```
+
+### 3. Dual AI Concept Generator (Primary + Fallback Rollback)
+* **Endpoint:** `POST /api/ai/generate-concept`
+* **Primary Model:** Google Gemini (`PRIMARY_AI_API_KEY`)
+* **Fallback Model:** Groq Llama 3 (`FALLBACK_AI_API_KEY`)
+* **Request Payload:** `{ "prompt": "Deep burgundy velvet Senator top with gold collar filigree" }`
+
+---
+
+## 🛑 MANDATORY DIRECTIVES FOR BACKEND & SOFTWARE ENGINEERS
+
+> [!IMPORTANT]
+> All incoming developers, software engineers, and backend AI agents MUST strictly comply with these rules. Do not modify or replace the core frontend decisions outlined below.
+
+1. **Payaza Gateway Exclusive**: Payaza is the ONLY supported payment gateway. Do NOT attempt to integrate Kora or alternate payment providers.
+2. **Naira (₦ NGN) Currency Exclusive**: Multi-currency conversion and USD toggles have been removed by design. All transactions, pricing metrics, and API payloads must be in **NGN**.
+3. **No Escrow Virtual Accounts**: Standard e-commerce direct checkout is enforced (`POST /api/payaza/initialize-transaction`). Do NOT introduce milestone-based escrow accounts or virtual bank transfers.
+4. **No Third-Party Branding**: Brand references to outside collections or legacy demos (e.g. Abraham's Collection) are strictly forbidden. The system is branded exclusively as **LOOM — 3D Virtual Atelier**.
+5. **Aesthetics & Color Palette Rules**: All UI elements, backend responses returning UI themes, or generated metadata must strictly respect the color system:
+   - Burgundy Wine (`#5B0F18`), Cherry Burgundy (`#800020`), Noir Black (`#1B1717`), Ivory Cream (`#FFFAEF`), Gold Foil (`#C9A96E`).
+
+---
+
+## 🗂️ Project Structure
 
 ```
 loom/
-├── docs/                    # Planning documents & reference images
-│   ├── references/          # Design moodboard & color palettes
-│   └── *.docx               # Project planning documents
-├── IMPLEMENTATION_PLAN.md   # Technical implementation plan
-├── STITCH_UI_PROMPT.md      # UI design prompt for Stitch
-├── PROJECT_ANALYSIS.md      # Full analysis of planning docs
+├── public/
+│   └── models/               # 3D mannequin & garment .glb models
+├── server/
+│   ├── routes/
+│   │   ├── aiConceptor.js    # Primary (Gemini) + Fallback (Groq) AI route
+│   │   ├── payaza.js         # Payaza payment transaction route
+│   │   └── orders.js         # Standard checkout order route
+│   └── server.js             # Express API & Socket.io server
+├── src/
+│   ├── components/
+│   │   ├── 3d/               # Three.js / React Three Fiber WebGL stage
+│   │   ├── modules/          # NativeStudio, Showroom, Sizing, Checkout, Textiles
+│   │   └── ui/               # Header, GlassCard, Badge
+│   ├── context/
+│   │   └── AtelierContext.jsx# Global state, Naira pricing & custom native builder
+│   ├── utils/
+│   │   └── poseCalculator.js # MediaPipe AI camera pose 3D landmark math
+│   ├── App.jsx               # Main layout & router
+│   └── main.jsx
+├── .env.example              # Environment variables template
+├── package.json
 └── README.md
 ```
 
@@ -91,46 +134,13 @@ loom/
 ## 🚀 Getting Started
 
 ```bash
-# Clone the repo
-git clone https://github.com/abraham-DT/loom.git
-cd loom
-
-# (Coming soon) Install dependencies
+# Install dependencies
 npm install
 
-# (Coming soon) Start development server
-npm run dev
+# Start both backend Express server and frontend Vite server concurrently
+npm start
 ```
 
 ---
 
-## 📄 Documentation
-
-- [**Project Analysis**](./PROJECT_ANALYSIS.md) — Full breakdown of the 7 planning documents
-- [**Implementation Plan**](./IMPLEMENTATION_PLAN.md) — Technical architecture & build roadmap
-- [**Stitch UI Prompt**](./STITCH_UI_PROMPT.md) — Complete UI design prompt with color palette
-
----
-
-## 🏆 Hackathon
-
-**Kora Hackathon** | Deadline: June 5, 2026
-
-- ✅ Team formed
-- ✅ Project concept & planning complete
-- ✅ Color palette & design system defined
-- 🔲 UI design in Stitch/Figma
-- 🔲 Frontend scaffolding
-- 🔲 Kora API integration
-- 🔲 3D garment models
-- 🔲 Deployment
-
----
-
-## 👥 Team
-
-Built with ❤️ for the Kora Hackathon.
-
----
-
-*© 2026 Loom — Abraham's Collection*
+*© 2026 LOOM — Where Fashion Meets Dimension*
