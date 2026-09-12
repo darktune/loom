@@ -112,7 +112,7 @@ function ProceduralMannequin({ chestScale, heightScale, waistScale, hipsScale })
   );
 }
 
-export function Mannequin({ measurements = { height: 180, chest: 40, waist: 32, hips: 39 }, modelUrl = '/models/mannequin.glb' }) {
+export function Mannequin({ measurements = { height: 180, chest: 40, waist: 32, hips: 39 }, modelUrl = null }) {
   const groupRef = useRef();
 
   const heightScale = measurements.height / 180;
@@ -138,11 +138,15 @@ export function Mannequin({ measurements = { height: 180, chest: 40, waist: 32, 
 
   return (
     <group ref={groupRef} scale={[chestScale, heightScale, (waistScale + hipsScale) / 2]}>
-      <MannequinErrorBoundary fallback={proceduralFallback}>
-        <Suspense fallback={proceduralFallback}>
-          <MixamoModel url={modelUrl} scale={[1, 1, 1]} materialProps={materialProps} />
-        </Suspense>
-      </MannequinErrorBoundary>
+      {modelUrl ? (
+        <MannequinErrorBoundary fallback={proceduralFallback}>
+          <Suspense fallback={proceduralFallback}>
+            <MixamoModel url={modelUrl} scale={[1, 1, 1]} materialProps={materialProps} />
+          </Suspense>
+        </MannequinErrorBoundary>
+      ) : (
+        proceduralFallback
+      )}
 
       {/* Base Display Stand */}
       <mesh position={[0, -0.15, 0]}>
