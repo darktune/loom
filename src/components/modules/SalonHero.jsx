@@ -12,7 +12,7 @@ export function SalonHero() {
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#800020]/30 border border-[#C9A96E]/40 text-[#C9A96E] text-[10px] font-mono tracking-widest uppercase">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>KORA HACKATHON 2026 • LOOM 3D ATELIER</span>
+            <span>LUXURY VIRTUAL FASHION • LOOM 3D ATELIER</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal text-[#FFFAEF] leading-[1.1]">
@@ -20,7 +20,7 @@ export function SalonHero() {
           </h1>
 
           <p className="text-xs sm:text-base font-mono text-[#FFFAEF]/70 max-w-xl leading-relaxed">
-            The luxury 3D virtual atelier replacing static lookbooks with parametric WebGL garments, live 3D body morphing, and Payaza milestone escrow.
+            The luxury 3D virtual atelier replacing static lookbooks with parametric WebGL garments, live 3D body morphing, and direct Payaza checkout.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
@@ -80,9 +80,9 @@ export function SalonHero() {
           <div className="w-10 h-10 rounded-2xl bg-[#800020]/30 border border-[#C9A96E]/30 flex items-center justify-center text-[#C9A96E]">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <h4 className="font-serif text-xl text-[#FFFAEF]">4-Tier Payaza Escrow</h4>
+          <h4 className="font-serif text-xl text-[#FFFAEF]">Direct Payaza Checkout</h4>
           <p className="text-xs font-mono text-[#FFFAEF]/60 leading-relaxed">
-            Payaza virtual accounts holding commission funds until each milestone is verified.
+            Direct, encrypted e-commerce checkout powered by Payaza payment gateway in Naira (₦).
           </p>
         </div>
 

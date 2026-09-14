@@ -1,22 +1,19 @@
 # Loom — Implementation Plan
 
 > **Project**: Loom — A 3D Fashion E-commerce Platform
-> **Hackathon**: Kora Hackathon | **Deadline**: June 5th (~8 days)
-> **Colors**: White `#FFFFFF` + Burgundy `#800020`
-> **Flagship Brand**: Abraham's Collection
+> **Type**: Commercial E-Commerce Business Application
+> **Colors**: Burgundy Wine `#5B0F18` + Gold `#C9A96E` + Black `#1B1717`
+> **Flagship Brand**: LOOM — 3D Virtual Atelier
 
 ---
 
 ## User Review Required
 
 > [!IMPORTANT]
-> **Approve this plan so I can begin scaffolding immediately.** Given the ~8-day deadline, every hour counts.
+> **Approve this plan so I can begin scaffolding immediately.**
 
 > [!WARNING]
-> **3D Models**: You don't have `.glb` exports yet. I'll start with a **free mannequin model** and placeholder garments so you can see the full experience working. See the [3D Model Guide](#-3d-model-guide-for-you) below for how to create your own later.
-
-> [!IMPORTANT]
-> **Kora API Keys**: You'll need to sign up at [korapay.com](https://korapay.com) and get your test API keys. See the [Kora Setup Guide](#-kora-api-setup-guide) below. I'll build the integration with mock/test mode so it works without keys initially.
+> **3D Models**: I'll start with a **procedural parametric mannequin model** and custom native garments so you can see the full experience working.
 
 ---
 
@@ -24,18 +21,18 @@
 
 ### Scope — What I'll Build for the MVP
 
-Given the deadline, here's the prioritized feature set:
+Here is the prioritized feature set:
 
 | Priority | Feature | Status |
 |----------|---------|--------|
-| 🔴 P0 | Stunning UI — White & burgundy glassmorphism design | Will build |
-| 🔴 P0 | 3D Garment Viewer — Rotate, zoom, inspect garments | Will build |
-| 🔴 P0 | Kora Pay Checkout — Slide-in drawer with escrow flow | Will build |
-| 🔴 P0 | Dynamic Currency Toggle (USD/NGN) | Will build |
-| 🟡 P1 | AI Sizing Wizard — Measurement input → scaled mannequin | Will build |
-| 🟡 P1 | AI Concept Generator — Text/image prompt → mock 3D preview | Will build (simulated) |
-| 🟡 P1 | Responsive Design — Mobile + Desktop | Will build |
-| 🟢 P2 | GSAP Animations — Cinematic transitions, scroll effects | Will build (essential ones) |
+| 🔴 P0 | Stunning UI — Burgundy & gold glassmorphism design | Built |
+| 🔴 P0 | 3D Garment Viewer — Rotate, zoom, inspect garments | Built |
+| 🔴 P0 | Payaza Pay Checkout — Direct checkout flow | Built |
+| 🔴 P0 | Naira Currency Exclusive (NGN) | Built |
+| 🟡 P1 | AI Sizing Wizard — Measurement input → scaled mannequin | Built |
+| 🟡 P1 | AI Concept Generator — Text prompt → bespoke 3D concept | Built |
+| 🟡 P1 | Responsive Design — Mobile + Desktop | Built |
+| 🟢 P2 | Micro Animations — Cinematic transitions | Built |
 | ⚪ P3 | Real-Time Tailor Collaboration | Post-hackathon |
 | ⚪ P3 | Full Aso-Ebi Group Payment Hub | Post-hackathon |
 

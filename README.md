@@ -2,7 +2,7 @@
 
 **Where Fashion Meets Dimension**
 
-> A minimalist 3D fashion e-commerce showroom replacing static product photos with interactive 3D WebGL garments, live MediaPipe camera body scanning, custom native design studio, and Payaza payment integration. Built for the Kora Hackathon 2026.
+> A minimalist 3D fashion e-commerce showroom replacing static product photos with interactive 3D WebGL garments, live MediaPipe camera body scanning, custom native design studio, and Payaza payment integration. Built for commercial luxury fashion e-commerce.
 
 ---
 
@@ -92,7 +92,7 @@ All backend engineers and AI copilots MUST adhere strictly to the following API 
 > [!IMPORTANT]
 > All incoming developers, software engineers, and backend AI agents MUST strictly comply with these rules. Do not modify or replace the core frontend decisions outlined below.
 
-1. **Payaza Gateway Exclusive**: Payaza is the ONLY supported payment gateway. Do NOT attempt to integrate Kora or alternate payment providers.
+1. **Payaza Gateway Exclusive**: Payaza is the ONLY supported payment gateway for transactions.
 2. **Naira (₦ NGN) Currency Exclusive**: Multi-currency conversion and USD toggles have been removed by design. All transactions, pricing metrics, and API payloads must be in **NGN**.
 3. **No Escrow Virtual Accounts**: Standard e-commerce direct checkout is enforced (`POST /api/payaza/initialize-transaction`). Do NOT introduce milestone-based escrow accounts or virtual bank transfers.
 4. **No Third-Party Branding**: Brand references to outside collections or legacy demos (e.g. Abraham's Collection) are strictly forbidden. The system is branded exclusively as **LOOM — 3D Virtual Atelier**.
