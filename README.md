@@ -131,6 +131,25 @@ loom/
 
 ---
 
+## 👥 Team Role Split
+
+This project is intentionally divided across three specialist roles so the system stays aligned with each tool's strengths:
+
+- Person 1: Backend & Escrow Systems Lead (Claude Pro)
+  - Kora Pay API and escrow state management
+  - Webhooks, idempotency, and secure payment flow
+  - PostgreSQL/Supabase schema and real-time room orchestration
+
+- Person 2: Frontend & UI/UX Developer (GitHub Copilot + IDE)
+  - Luxury storefront and glassmorphism design system
+  - React/Vite UI, checkout drawer, dynamic pricing, and responsive layout
+  - Premium brand styling and customer-facing interactions
+
+- Person 3: 3D Graphics & AI Lead (Antigravity)
+  - React Three Fiber showroom, garment viewer, and interactive 3D hotspots
+  - AI sizing pipeline, mannequin scaling, and 3D concept generation
+  - Real-time synced 3D state and visual storytelling
+
 ## 🚀 Getting Started
 
 ```bash
