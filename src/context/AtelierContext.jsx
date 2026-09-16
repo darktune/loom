@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { GARMENTS } from '../data/garments';
 import { tailors } from '../data/tailors';
 
@@ -6,9 +6,32 @@ const AtelierContext = createContext();
 
 export const AtelierProvider = ({ children }) => {
   const [activeGarment, setActiveGarment] = useState(GARMENTS[0]);
-  const [activeTab, setActiveTab] = useState('atelier'); // 'salon' | 'atelier' | 'textiles' | 'editions' | 'studio'
-  const currency = 'NGN'; // Fixed to Naira (₦) only
+  const [activeTab, setActiveTab] = useState('salon'); // 'salon' | 'atelier' | 'studio' | 'textiles' | 'editions'
   
+  // Luxury Theme Engine: 'noir' (Obsidian) | 'burgundy' (Imperial Wine) | 'ivory' (Silk Gallery)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('loom_theme') || 'noir';
+  });
+
+  // Dynamic Multi-Currency System (USD and NGN)
+  const [currency, setCurrency] = useState('NGN'); // 'NGN' | 'USD'
+  const exchangeRate = 1600; // 1 USD = ₦1,600 NGN
+
+  // Apply theme to DOM
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('loom_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'noir' ? 'burgundy' : theme === 'burgundy' ? 'ivory' : 'noir';
+    setTheme(nextTheme);
+  };
+
+  const toggleCurrency = () => {
+    setCurrency((prev) => (prev === 'NGN' ? 'USD' : 'NGN'));
+  };
+
   // Modals & Drawers
   const [isSizingWizardOpen, setIsSizingWizardOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -33,7 +56,7 @@ export const AtelierProvider = ({ children }) => {
 
   // Custom Native Design Builder State
   const [customNative, setCustomNative] = useState({
-    style: 'senator', // 'senator' | 'agbada' | 'kaftan' | 'dashiki'
+    style: 'agbada', // 'senator' | 'agbada' | 'kaftan' | 'dashiki'
     fit: 'tailored',   // 'slim' | 'tailored' | 'flowing'
     colorHex: '#800020',
     colorName: 'Imperial Cherry Burgundy',
@@ -42,28 +65,31 @@ export const AtelierProvider = ({ children }) => {
     pockets: 'single', // 'none' | 'single' | 'dual-flap' | 'zip'
     embroidery: 'geometric', // 'none' | 'geometric' | 'filigree' | 'minimal'
     sleeve: 'long',   // 'short' | 'quarter' | 'long'
-    priceNGN: 520000
+    priceNGN: 697500
   });
 
   // Customer Order Details
   const [orderDetails, setOrderDetails] = useState({
-    fullName: 'Abraham Sterling',
-    email: 'patron@loom.fashion',
-    phone: '+234 803 123 4567',
-    address: '12 Marina Boulevard, Victoria Island, Lagos'
+    fullName: 'Sterling Abraham',
+    email: 'client@loom.atelier',
+    phone: '+234 803 555 0192',
+    address: '14 Queen’s Drive, Ikoyi, Lagos'
   });
 
   // Collaborative Fitting Room Sync
-  const [roomCode, setRoomCode] = useState('ROOM-849201');
+  const [roomCode, setRoomCode] = useState('LOOM-VIRTUAL-849');
   const [chatMessages, setChatMessages] = useState([
-    { sender: 'Master Tailor', time: '18:40', text: 'Good evening! Your 3D chest measurement (40 in) has been confirmed. Fabric cutting is scheduled.', isTailor: true },
-    { sender: 'You', time: '18:42', text: 'Thank you! Excited to proceed with Payaza checkout in Naira.', isTailor: false }
+    { sender: 'Master Artisan', time: '10:15', text: 'Welcome to the Loom digital fitting room. Your 3D measurements are synced.', isTailor: true }
   ]);
 
-  // Currency Formatting (Naira ₦ only)
+  // Adaptive Price Formatting
   const formatPrice = (priceNGN) => {
-    const ngnVal = priceNGN || 697500;
-    return `₦${ngnVal.toLocaleString()}`;
+    const ngn = priceNGN || 697500;
+    if (currency === 'USD') {
+      const usd = Math.round(ngn / exchangeRate);
+      return `$${usd.toLocaleString()}`;
+    }
+    return `₦${ngn.toLocaleString()}`;
   };
 
   const sendChatMessage = (text) => {
@@ -84,7 +110,11 @@ export const AtelierProvider = ({ children }) => {
         setActiveGarment,
         activeTab,
         setActiveTab,
+        theme,
+        setTheme,
+        toggleTheme,
         currency,
+        toggleCurrency,
         formatPrice,
         isSizingWizardOpen,
         setIsSizingWizardOpen,
