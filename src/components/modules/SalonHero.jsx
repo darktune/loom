@@ -1,98 +1,126 @@
 import React from 'react';
 import { useAtelier } from '../../context/AtelierContext';
-import { ArrowRight, Sparkles, ShieldCheck, Box, Award } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, Box, Award, Compass, Eye } from 'lucide-react';
+import { LoomLogo } from '../ui/LoomLogo';
 
 export function SalonHero() {
-  const { setActiveTab, setIsSizingWizardOpen } = useAtelier();
+  const { setActiveTab, setIsSizingWizardOpen, formatPrice, activeGarment } = useAtelier();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-8 sm:space-y-12 animate-fade-in text-left">
-      {/* Hero Banner Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#800020]/30 border border-[#C9A96E]/40 text-[#C9A96E] text-[10px] font-mono tracking-widest uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>KORA HACKATHON 2026 • LOOM 3D ATELIER</span>
+    <div className="relative min-h-[calc(100vh-80px)] flex flex-col justify-between max-w-7xl mx-auto px-4 sm:px-8 pt-24 sm:pt-28 pb-12 animate-entrance select-none">
+      {/* Background Ambient Radial Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[var(--accent-burgundy)]/15 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+      {/* Hero Headline & Proportionate Breathing Space */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center flex-1 my-auto">
+        <div className="lg:col-span-7 space-y-8 text-left">
+          {/* Subtle Edition Pill */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-floating text-[10px] font-mono tracking-[0.25em] uppercase text-[var(--accent-gold)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)] animate-pulse" />
+            <span>Digital Atelier • Autumn / Winter Bespoke</span>
           </div>
 
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal text-[#FFFAEF] leading-[1.1]">
-            Where Fashion Meets <span className="italic text-[#C9A96E]">Dimension.</span>
-          </h1>
+          {/* Apple-Level Hero Typography */}
+          <div className="space-y-4">
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal tracking-tight text-[var(--text-primary)] leading-[1.05]">
+              Fashion In <br />
+              <span className="italic text-[var(--accent-gold)] font-light">
+                Dimension.
+              </span>
+            </h1>
 
-          <p className="text-xs sm:text-base font-mono text-[#FFFAEF]/70 max-w-xl leading-relaxed">
-            The luxury 3D virtual atelier replacing static lookbooks with parametric WebGL garments, live 3D body morphing, and Payaza milestone escrow.
-          </p>
+            <p className="text-sm sm:text-base font-mono text-[var(--text-secondary)] max-w-lg leading-relaxed font-light">
+              Where heritage African craftsmanship converges with real-time biometric 3D modeling and milestone-locked escrow.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+          {/* Minimal Ghost Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
             <button
               onClick={() => setActiveTab('atelier')}
-              className="py-4 px-8 rounded-2xl bg-[#800020] hover:bg-[#630000] border border-[#C9A96E]/50 text-[#FFFAEF] font-mono text-xs font-bold tracking-[0.2em] uppercase shadow-burgundy-glow flex items-center justify-center gap-3 cursor-pointer transition-all hover:scale-105"
+              className="px-8 py-4 rounded-full bg-gradient-to-r from-[var(--accent-burgundy)] to-[#630000] border border-[var(--accent-gold)]/60 text-[#FFFAEF] font-mono text-xs font-semibold tracking-[0.25em] uppercase shadow-ambient hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer group"
             >
-              <span>ENTER THE ATELIER</span>
-              <ArrowRight className="w-4 h-4 text-[#C9A96E]" />
+              <span>Enter The Atelier</span>
+              <ArrowRight className="w-4 h-4 text-[var(--accent-gold)] group-hover:translate-x-1 transition-transform" />
             </button>
 
             <button
               onClick={() => setIsSizingWizardOpen(true)}
-              className="py-4 px-6 rounded-2xl bg-[#FFFAEF]/5 hover:bg-[#FFFAEF]/10 border border-[#FFFAEF]/20 text-[#FFFAEF] font-mono text-xs tracking-wider uppercase cursor-pointer text-center"
+              className="px-8 py-4 rounded-full btn-ghost-luxury font-mono text-xs tracking-[0.2em] uppercase cursor-pointer text-center"
             >
-              <span>CALIBRATE 3D FIT</span>
+              <span>Calibrate 3D Fit</span>
             </button>
           </div>
         </div>
 
-        {/* Featured Garment Showcase Card */}
-        <div className="lg:col-span-5 relative">
-          <div className="p-6 sm:p-8 rounded-3xl glass-card border border-[#C9A96E]/40 text-center space-y-6 shadow-burgundy-glow">
-            <span className="text-[10px] font-mono text-[#C9A96E] uppercase tracking-widest block">
-              FLAGSHIP MODEL • OBJ/01
-            </span>
-
-            <div className="relative w-40 sm:w-48 h-56 sm:h-64 mx-auto flex items-center justify-center">
-              <div className="w-full h-full rounded-3xl bg-gradient-to-b from-[#800020]/40 via-[#5B0F18]/60 to-[#120F0D] border border-[#C9A96E]/30 flex flex-col items-center justify-center p-4">
-                <span className="font-serif italic text-5xl sm:text-6xl text-[#C9A96E] opacity-90 animate-pulse">👑</span>
-                <span className="font-serif text-lg sm:text-xl text-[#FFFAEF] mt-2">The Sovereign Agbada</span>
-                <span className="text-[10px] font-mono text-[#C9A96E]">Imperial Cherry Burgundy</span>
-              </div>
+        {/* Right: Architectural 3D Spotlight Frame */}
+        <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+          <div
+            onClick={() => setActiveTab('atelier')}
+            className="w-full max-w-sm p-6 rounded-[32px] glass-floating space-y-6 text-center shadow-2xl transition-all duration-500 hover:border-[var(--accent-gold)] hover:scale-[1.02] cursor-pointer group"
+          >
+            <div className="flex items-center justify-between text-[10px] font-mono text-[var(--accent-gold)] tracking-widest uppercase">
+              <span>Flagship Piece</span>
+              <span className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                <Eye className="w-3 h-3" />
+                <span>Inspect 3D</span>
+              </span>
             </div>
 
-            <div className="flex justify-between items-center text-xs font-mono pt-4 border-t border-[#FFFAEF]/10">
-              <span className="text-[#FFFAEF]/60">Artisan Studio:</span>
-              <span className="text-[#C9A96E] font-bold">Babatunde O. Atelier</span>
+            {/* Visual Centerpiece Canvas Placeholder */}
+            <div className="relative w-48 h-64 mx-auto rounded-2xl bg-gradient-to-b from-[var(--accent-burgundy)]/30 via-black/40 to-black/80 border border-[var(--border-subtle)] flex flex-col items-center justify-center p-4 overflow-hidden group-hover:border-[var(--accent-gold)]/60 transition-colors">
+              <div className="absolute inset-0 bg-radial-at-c from-[var(--accent-gold)]/10 via-transparent to-transparent pointer-events-none" />
+              
+              <span className="font-serif italic text-6xl text-[var(--accent-gold)] opacity-80 group-hover:scale-110 transition-transform duration-500">
+                ⚜
+              </span>
+              <span className="font-serif text-lg text-[var(--text-primary)] mt-3">
+                {activeGarment?.name || 'The Sovereign Agbada'}
+              </span>
+              <span className="text-[10px] font-mono text-[var(--accent-gold)] mt-1">
+                {activeGarment?.fabric || 'Hand-Loomed Aso-Oke'}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-[var(--border-subtle)] text-xs font-mono">
+              <span className="text-[var(--text-secondary)]">Bespoke Commission</span>
+              <span className="font-mono text-[10px] tracking-wider uppercase text-[var(--accent-gold)] font-bold">
+                Quote on Consultation
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3-Column Key Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-        <div className="p-6 rounded-3xl glass-panel border border-[#C9A96E]/20 space-y-2">
-          <div className="w-10 h-10 rounded-2xl bg-[#800020]/30 border border-[#C9A96E]/30 flex items-center justify-center text-[#C9A96E]">
-            <Award className="w-5 h-5" />
+      {/* Bottom 3 Minimalist Pillars */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-12 border-t border-[var(--border-subtle)] text-left">
+        <div className="p-5 rounded-2xl glass-panel space-y-1.5">
+          <div className="flex items-center gap-2 text-[var(--accent-gold)] text-xs font-mono tracking-widest uppercase">
+            <Award className="w-4 h-4" />
+            <span>01 • Artisanal Provenance</span>
           </div>
-          <h4 className="font-serif text-xl text-[#FFFAEF]">100% Handcrafted Aso-Oke</h4>
-          <p className="text-xs font-mono text-[#FFFAEF]/60 leading-relaxed">
-            Woven on heritage wooden looms in Iseyin & Lagos with metallic gold filigree thread.
+          <p className="text-xs font-mono text-[var(--text-secondary)] leading-relaxed">
+            Every textile loomed by master artisans across Iseyin and Lagos.
           </p>
         </div>
 
-        <div className="p-6 rounded-3xl glass-panel border border-[#C9A96E]/20 space-y-2">
-          <div className="w-10 h-10 rounded-2xl bg-[#800020]/30 border border-[#C9A96E]/30 flex items-center justify-center text-[#C9A96E]">
-            <ShieldCheck className="w-5 h-5" />
+        <div className="p-5 rounded-2xl glass-panel space-y-1.5">
+          <div className="flex items-center gap-2 text-[var(--accent-gold)] text-xs font-mono tracking-widest uppercase">
+            <Compass className="w-4 h-4" />
+            <span>02 • Parametric 3D Morph</span>
           </div>
-          <h4 className="font-serif text-xl text-[#FFFAEF]">4-Tier Payaza Escrow</h4>
-          <p className="text-xs font-mono text-[#FFFAEF]/60 leading-relaxed">
-            Payaza virtual accounts holding commission funds until each milestone is verified.
+          <p className="text-xs font-mono text-[var(--text-secondary)] leading-relaxed">
+            Zero guess sizing. Mannequins sculpt in real-time to your measurements.
           </p>
         </div>
 
-        <div className="p-6 rounded-3xl glass-panel border border-[#C9A96E]/20 space-y-2">
-          <div className="w-10 h-10 rounded-2xl bg-[#800020]/30 border border-[#C9A96E]/30 flex items-center justify-center text-[#C9A96E]">
-            <Box className="w-5 h-5" />
+        <div className="p-5 rounded-2xl glass-panel space-y-1.5">
+          <div className="flex items-center gap-2 text-[var(--accent-gold)] text-xs font-mono tracking-widest uppercase">
+            <ShieldCheck className="w-4 h-4" />
+            <span>03 • Payaza Protected Escrow</span>
           </div>
-          <h4 className="font-serif text-xl text-[#FFFAEF]">60 FPS WebGL Showroom</h4>
-          <p className="text-xs font-mono text-[#FFFAEF]/60 leading-relaxed">
-            React Three Fiber stage with real-time morphing mannequins and raycaster hotspots.
+          <p className="text-xs font-mono text-[var(--text-secondary)] leading-relaxed">
+            Funds segregated and released strictly on verified tailoring milestones.
           </p>
         </div>
       </div>

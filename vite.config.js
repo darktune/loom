@@ -12,4 +12,22 @@ export default defineConfig({
       },
     },
   },
+  test: {
+    globals: true,
+    environment: 'node',
+    setupFiles: './src/test/setup.js',
+    include: ['src/test/**/*.test.js'],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
+            return 'vendor-three';
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1400,
+  },
 });

@@ -85,8 +85,8 @@ export function CheckoutDrawer() {
               </div>
 
               <div className="text-right">
-                <span className="font-serif text-xl text-[#C9A96E] font-bold block">
-                  {formatPrice(activeGarment.priceNGN)}
+                <span className="font-mono text-xs text-[#C9A96E] font-bold tracking-wider uppercase block">
+                  Agreed Tailor Quote
                 </span>
                 <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
                   TAILORED FIT ({measurements.chest} in)
@@ -171,7 +171,7 @@ export function CheckoutDrawer() {
               className="w-full py-4 px-6 rounded-2xl bg-[#800020] hover:bg-[#630000] border border-[#C9A96E]/50 text-[#FFFAEF] font-mono text-xs tracking-[0.2em] uppercase font-bold shadow-burgundy-glow flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-102"
             >
               <CreditCard className="w-4 h-4 text-[#C9A96E]" />
-              <span>{isProcessing ? 'CONNECTING TO PAYAZA...' : `PAY WITH PAYAZA (${formatPrice(activeGarment.priceNGN)})`}</span>
+              <span>{isProcessing ? 'CONNECTING TO PAYAZA...' : 'CONFIRM BESPOKE ESCROW ORDER'}</span>
             </button>
           ) : (
             <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 text-center space-y-1">

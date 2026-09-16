@@ -28,10 +28,24 @@ class SceneErrorBoundary extends Component {
 
 export function AtelierScene({ garment, measurements, isNightLighting = false }) {
   return (
-    <div className="w-full h-full relative">
+    <div
+      className="w-full h-full relative"
+      style={{ touchAction: 'none' }}
+      aria-label="Interactive 3D Mannequin Showroom Viewport"
+      role="region"
+    >
       <Canvas
         camera={{ position: [0, 0.8, 3.2], fov: 45 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: false }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.warn('⚠️ WebGL context lost. Attempting auto-restoration...');
+          }, false);
+          gl.domElement.addEventListener('webglcontextrestored', () => {
+            console.log('✅ WebGL context successfully restored.');
+          }, false);
+        }}
         shadows
       >
         {/* Offline High-Fidelity Studio Lighting Rig */}
