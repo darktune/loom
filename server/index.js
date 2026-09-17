@@ -2,19 +2,20 @@ import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { createTripoClient, validateGeneration } from './tripo.js';
+import { createJobStore, chooseProvider, providerCatalog } from './generationArchitecture.js';
 export function createGenerationServer({ key = '', client = createTripoClient(key) } = {}) {
-  const jobs = new Map();
+  const jobs = createJobStore();
   const send = (res, status, data) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(data)); };
   return createServer(async (req, res) => {
     const host = req.headers.host || '', origin = req.headers.origin;
     if (!/^(localhost|127\.0\.0\.1):\d+$/.test(host) || (origin && !/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin))) return send(res, 403, { error: 'Local development requests only.' });
     const path = req.url?.split('?')[0];
     if (req.method === 'GET' && path === '/api/generation/config') {
-      if (!key) return send(res, 200, { provider: 'Tripo', configured: false, connected: false, maxViews: 4 });
+      if (!key) return send(res, 200, { provider: 'Tripo', configured: false, connected: false, maxViews: 4, providers: providerCatalog });
       try {
         const balance = await client.balance();
-        return send(res, 200, { provider: 'Tripo', configured: true, connected: true, availableCredits: balance.available, frozenCredits: balance.frozen, maxViews: 4 });
-      } catch (error) { return send(res, 200, { provider: 'Tripo', configured: true, connected: false, error: error.message, maxViews: 4 }); }
+        return send(res, 200, { provider: 'Tripo', configured: true, connected: true, availableCredits: balance.available, frozenCredits: balance.frozen, maxViews: 4, providers: providerCatalog });
+      } catch (error) { return send(res, 200, { provider: 'Tripo', configured: true, connected: false, error: error.message, maxViews: 4, providers: providerCatalog }); }
     }
     if (req.method === 'POST' && path === '/api/generation') {
       if (!key) return send(res, 503, { error: 'Generation is not configured. Add TRIPO_API_KEY to .env and restart the API server.' });
@@ -23,11 +24,14 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
         const chunks = []; let size = 0;
         for await (const chunk of req) { size += chunk.length; if (size > 9 * 1024 * 1024) { send(res, 413, { error: 'Generation images are too large.' }); return; } chunks.push(chunk); }
         const input = JSON.parse(Buffer.concat(chunks).toString()); validateGeneration(input);
-        if (jobs.has(input.requestId)) return send(res, 200, jobs.get(input.requestId));
-        for (const [id, job] of jobs) if (Date.now() - job.createdAt > 86400000) jobs.delete(id);
-        if (jobs.size >= 100) return send(res, 429, { error: 'Local job limit reached. Save task IDs before restarting the server.' });
-        if ([...jobs.values()].some((job) => ['uploading', 'queued', 'running'].includes(job.status))) return send(res, 409, { error: 'A generation is already active. Wait for it to finish.' });
-        const job = { id: input.requestId, createdAt: Date.now(), status: 'uploading', progress: 0, taskId: null }; jobs.set(job.id, job);
+        const provider = chooseProvider({ requested: input.provider || 'auto', tripoConfigured: Boolean(key) });
+        if (provider.id !== 'tripo-api') return send(res, 409, { error: `${provider.label} requires supervised browser handoff.` });
+        const existing = jobs.get(input.requestId);
+        if (existing) return send(res, 200, existing);
+        let job;
+        try { job = jobs.create({ id: input.requestId, provider: provider.id, inputHash: input.inputHash || input.requestId }); }
+        catch (error) { return send(res, 409, { error: error.message }); }
+        Object.assign(job, { status: 'uploading', taskId: null });
         client.create(input.images).then((taskId) => { Object.assign(job, { taskId, status: 'queued' }); }).catch((error) => { Object.assign(job, { status: 'failed', error: error.message }); });
         return send(res, 202, job);
       } catch (error) { return send(res, 400, { error: error instanceof SyntaxError ? 'Invalid request JSON.' : error.message }); }

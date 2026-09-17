@@ -298,7 +298,7 @@ export default function App() {
                 <div className="preview-summary">
                   <strong>Proportion preview</strong>
                   <p>{references.length} references in this design brief.</p>
-                  {generated && <p>Generated model is available. Select Generated garment to inspect it and enable approximate fitting.</p>}
+                  {generated && <p>{generated.provider || 'Tripo'} model is available. Select Generated garment to inspect it. Original proportions are preserved; measurements are not applied.</p>}
                   {prompt && <p>Design brief: {prompt}</p>}
                   <p>
                     Height {measurements.height} cm · Chest {measurements.chest} cm · Waist {measurements.waist} cm · Hip {measurements.hip} cm.

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { imageDataUrl } from './references';
+import { inspectGlb } from './modelAsset';
+import { validateFallbackFile } from './browserFallback';
 const ACTIVE = ['uploading', 'queued', 'running'];
 async function api(path, options) {
   const response = await fetch(path, { ...options, signal: AbortSignal.timeout(20000) });
@@ -12,10 +14,29 @@ async function api(path, options) {
   return data;
 }
 export function useGeneration(onResult) {
+  const [importing, setImporting] = useState(false), [importError, setImportError] = useState(''), [importedName, setImportedName] = useState('');
+  const importedUrl = useRef(null), importSequence = useRef(0);
+  useEffect(() => () => { importSequence.current++; if (importedUrl.current) URL.revokeObjectURL(importedUrl.current); }, []);
   const [config, setConfig] = useState(null), [job, setJob] = useState(null), [error, setError] = useState('');
   const [preparing, setPreparing] = useState(false), [paused, setPaused] = useState(false);
   const busy = useRef(false), snapshot = useRef(null), delivered = useRef(null), resultCallback = useRef(onResult);
   resultCallback.current = onResult;
+  const importMeshy = async (file, brief) => {
+    if (busy.current || ACTIVE.includes(job?.status)) return;
+    const sequence = ++importSequence.current;
+    setImporting(true); setImportError(''); setImportedName('');
+    try {
+      validateFallbackFile(file);
+      inspectGlb(await file.arrayBuffer());
+      if (sequence !== importSequence.current) return;
+      const modelUrl = URL.createObjectURL(file), previous = importedUrl.current;
+      importedUrl.current = modelUrl;
+      resultCallback.current({ modelUrl, provider: 'Meshy', name: file.name, snapshot: brief, fitApplied: false, imported: true });
+      setImportedName(file.name);
+      if (previous) URL.revokeObjectURL(previous);
+    } catch (issue) { if (sequence === importSequence.current) setImportError(issue.message); }
+    finally { if (sequence === importSequence.current) setImporting(false); }
+  };
   const checkConfig = useCallback(async () => {
     try { setConfig(await api('/api/generation/config')); setError(''); }
     catch { setConfig(null); setError('Generation API is offline. Start it with npm run server.'); }
@@ -43,7 +64,7 @@ export function useGeneration(onResult) {
     return () => { controller.abort(); clearTimeout(timer); };
   }, [job?.id, job?.status, paused]);
   const start = async (items, measurements, prompt, consent, outline = null) => {
-    if (busy.current || ACTIVE.includes(job?.status)) return;
+    if (busy.current || importing || ACTIVE.includes(job?.status)) return;
     busy.current = true; setPreparing(true); setError(''); setPaused(false);
     try {
       const selected = items.filter((item) => item.role !== 'reference' && item.file.type.startsWith('image/'));
@@ -75,5 +96,5 @@ export function useGeneration(onResult) {
     setJob(null); setPaused(false); setError(''); snapshot.current = null;
     try { sessionStorage.removeItem('loom-generation-job'); } catch { /* Optional recovery. */ }
   };
-  return { config, checkConfig, job, error, start, refresh, clearRecovery, preparing, active: preparing || ACTIVE.includes(job?.status), paused };
+  return { config, checkConfig, job, error, start, refresh, clearRecovery, preparing, active: preparing || ACTIVE.includes(job?.status), paused, importMeshy, importing, importError, importedName };
 }

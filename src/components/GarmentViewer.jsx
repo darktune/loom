@@ -88,7 +88,7 @@ export default function GarmentViewer({ garment, measurements, compact = false, 
   }
   const [view, setView] = useState('construction');
   const [fit, setFit] = useState({ rotation: 0 });
-  useEffect(() => { if (generated?.modelUrl) { setView('generated'); setFit({ rotation: 0 }); } }, [generated?.modelUrl]);
+  useEffect(() => { if (generated?.modelUrl) { setLocalModel(null); setView('generated'); setFit({ rotation: 0 }); } }, [generated?.modelUrl]);
   const [texture, setTexture] = useState(null);
   useEffect(() => {
     let cancelled = false;
@@ -115,7 +115,7 @@ export default function GarmentViewer({ garment, measurements, compact = false, 
           <Lightformer intensity={2} position={[3, 1, 1]} rotation={[0, -Math.PI / 4, 0]} scale={[2, 4, 1]} />
           <Lightformer intensity={1} position={[0, 3, -3]} scale={[3, 2, 1]} />
         </Environment>
-        <Suspense fallback={<Html center>Loading garmentâ€¦</Html>}>
+        <Suspense fallback={<Html center><span className="model-loading" role="status"><span className="loom-spinner" aria-hidden="true" />Loading model…</span></Html>}>
           {view === 'construction' && blueprint ? <ConstructionGarment blueprint={blueprint} wireframe={construction.wireframe} /> : view === 'generated' && activeModel ? <GeneratedGarment url={activeModel.modelUrl} fit={fit} /> : view === 'studio' ? <StudioMannequin proportions={proportions} texture={texture} /> : garment.modelUrl ? <GarmentAsset url={garment.modelUrl} /> : <ProceduralGarment garment={garment} proportions={proportions} onDetail={setDetail} />}
         </Suspense>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.12, 0]} receiveShadow>
@@ -125,17 +125,17 @@ export default function GarmentViewer({ garment, measurements, compact = false, 
       </Canvas>
     </ViewerBoundary>
     <div className="viewer-tools">
-      <span>{view === 'construction' ? 'Construction study' : view === 'generated' ? 'Generated model' : view === 'studio' ? 'Studio dress form' : 'Garment sketch'}</span>
+      <span>{view === 'construction' ? 'Construction study' : view === 'generated' ? `${activeModel?.provider || (activeModel?.imported || localModel ? 'Imported' : 'Tripo')} model` : view === 'studio' ? 'Studio dress form' : 'Garment sketch'}</span>
       <button type="button" onClick={() => controls.current?.reset()}>Reset view</button>
     </div>
     <div className="viewer-modes"><button aria-pressed={view === 'construction'} onClick={() => { setView('construction'); setDetail(null); }}>Construction</button><button aria-pressed={view === 'studio'} onClick={() => { setView('studio'); setDetail(null); }}>Studio mannequin</button><button aria-pressed={view === 'sketch'} onClick={() => { setView('sketch'); setDetail(null); }}>Garment sketch</button>{activeModel && <button aria-pressed={view === 'generated'} onClick={() => { setView('generated'); setDetail(null); }}>Generated garment</button>}</div>
-    <details className="model-import"><summary>Import GLB</summary><label>Import exported GLB<input type="file" accept=".glb" onChange={importModel} disabled={importing} /></label><small>Local preview only. File stays in this browser session.</small>{importing && <span role="status">Reading modelâ€¦</span>}{importError && <p role="alert">{importError}</p>}{localModel && <span>{localModel.name} <button type="button" onClick={() => { setLocalModel(null); setView(generated ? 'generated' : 'construction'); }}>Remove import</button></span>}</details>
-    {view === 'generated' && <div className="fit-controls"><label>Rotation: {fit.rotation}Â°<input type="range" min="-180" max="180" value={fit.rotation} onChange={(event) => setFit({ rotation: Number(event.target.value) })} /></label><small>Original model proportions preserved. Measurements are not applied to this preview.</small></div>}
-    {view === 'construction' && <p className='studio-caption'>Measurement-driven shell Â· no cloth simulation</p>}
-    {view === 'studio' && <p className="studio-caption">{fabricUrl ? 'Your image as fabric Â· not outfit reconstruction' : 'Sample dress form Â· not the selected garment'}</p>}
-    {!compact && <p className="viewer-hint">Drag to rotate Â· Scroll or pinch to zoom</p>}
+    <details className="model-import"><summary>Import GLB</summary><label>Import exported GLB<input type="file" accept=".glb" onChange={importModel} disabled={importing} /></label><small>Local preview only. File stays in this browser session.</small>{importing && <span role="status">Reading model…</span>}{importError && <p role="alert">{importError}</p>}{localModel && <span>{localModel.name} <button type="button" onClick={() => { setLocalModel(null); setView(generated ? 'generated' : 'construction'); }}>Remove import</button></span>}</details>
+    {view === 'generated' && <div className="fit-controls"><label>Rotation: {fit.rotation}°<input type="range" min="-180" max="180" value={fit.rotation} onChange={(event) => setFit({ rotation: Number(event.target.value) })} /></label>{activeModel?.modelUrl?.startsWith('blob:') && <a href={activeModel.modelUrl} download={activeModel.name || 'loom-model.glb'}>Download GLB</a>}<small>Original model proportions preserved. Measurements are not applied to this preview.</small></div>}
+    {view === 'construction' && <p className='studio-caption'>Measurement-driven shell · no cloth simulation</p>}
+    {view === 'studio' && <p className="studio-caption">{fabricUrl ? 'Your image as fabric · not outfit reconstruction' : 'Sample dress form · not the selected garment'}</p>}
+    {!compact && <p className="viewer-hint">Drag to rotate · Scroll or pinch to zoom</p>}
     {detail && <div className="garment-detail" role="status">
-      <button type="button" onClick={() => setDetail(null)} aria-label="Close garment detail">Ã—</button>
+      <button type="button" onClick={() => setDetail(null)} aria-label="Close garment detail">×</button>
       <strong>{detail}</strong>
       <p>{detail === 'Chest' ? `Chest reference: ${measurements.chest} cm.` : detail === 'Sleeve' ? 'Illustrative sleeve shape. Tailor measurements are needed for sleeve length.' : `Hip reference: ${measurements.hip} cm. Fabric drape is illustrative.`}</p>
     </div>}

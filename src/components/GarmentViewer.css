@@ -72,3 +72,12 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .model-import label, .model-import small, .model-import span { display: block; margin-top: 8px; overflow-wrap: anywhere; }
 .model-import input { display: block; max-width: 100%; margin-top: 6px; font-size: 11px; }
 .model-import button { color: #fffaef; background: #35272d; border: 1px solid #756269; border-radius: 8px; padding: 6px; }
+.meshy-fallback { margin-top: 24px; padding: 18px; border: 1px solid #756269; border-radius: 14px; }
+.meshy-fallback summary { cursor: pointer; font-weight: 600; }
+.meshy-fallback input { display: block; max-width: 100%; margin-top: 10px; }
+.fallback-references { display: grid; gap: 10px; margin: 14px 0; }
+.meshy-fallback a, .fit-controls a { color: #eed5aa; text-decoration: underline; }
+.loom-spinner { display: inline-block; width: 18px; height: 18px; margin-right: 8px; vertical-align: middle; border: 2px solid #aa8491; border-top-color: #fff; border-radius: 50%; animation: loom-spin .8s linear infinite; }
+.model-loading { display: flex; align-items: center; white-space: nowrap; padding: 14px; background: #231b22; border-radius: 12px; color: #fff; }
+@keyframes loom-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .loom-spinner { animation: none; } }
