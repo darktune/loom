@@ -1,0 +1,33 @@
+{
+  "model": "agbada-rear-corrected.glb",
+  "vertices": 388513,
+  "triangles": 723326,
+  "meshes": 1,
+  "materials": 1,
+  "skins": 0,
+  "animations": 0,
+  "morph_targets": 0,
+  "weld_decimal_places": 6,
+  "vertices_after_weld": 361541,
+  "connected_components_after_weld": 1,
+  "largest_components": [
+    {
+      "triangles": 723326,
+      "vertices_after_weld": 361541,
+      "bounds_min": [
+        -0.8422170281410217,
+        -0.9519529938697815,
+        -0.42148199677467346
+      ],
+      "bounds_max": [
+        0.8339669704437256,
+        0.9503269791603088,
+        0.41842401027679443
+      ]
+    }
+  ],
+  "boundary_edges_after_weld": 0,
+  "nonmanifold_edges_after_weld": 0,
+  "degenerate_triangles_after_weld": 0,
+  "limitations": "Connectivity is geometric, not semantic segmentation. Counts depend on weld tolerance. No physical unit calibration or sewing pattern validation is inferred."
+}

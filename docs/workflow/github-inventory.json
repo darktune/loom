@@ -1,0 +1,380 @@
+{
+  "scope": "Public GitHub API only",
+  "observedAt": "2026-09-14",
+  "account": "darktune",
+  "repositories": [
+    {
+      "full_name": "darktune/ANTHO",
+      "description": "nigerian clothing line",
+      "html_url": "https://github.com/darktune/ANTHO",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/loom",
+      "description": "LOOM - Where Fashion Meets Dimension. A minimalist 3D fashion e-commerce platform.",
+      "html_url": "https://github.com/darktune/loom",
+      "language": "JavaScript",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/collection-website",
+      "description": "abraham collection library website",
+      "html_url": "https://github.com/darktune/collection-website",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/infisical",
+      "description": "Infisical is the open-source platform for secrets, certificates, and privileged access management.",
+      "html_url": "https://github.com/darktune/infisical",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/News-insights",
+      "description": "news website",
+      "html_url": "https://github.com/darktune/News-insights",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/n8n",
+      "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
+      "html_url": "https://github.com/darktune/n8n",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/mesh-llm",
+      "description": "Distributed AI/LLM for the people. Share compute privately or publicly to power your agents and chat.",
+      "html_url": "https://github.com/darktune/mesh-llm",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/cloudflare-os",
+      "description": "Agent workspace built on Cloudflare Workers for creating documents, building apps, and running agents with your company’s context and systems.",
+      "html_url": "https://github.com/darktune/cloudflare-os",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/TITANIC-SURVIVAL-PREDICTION-SYSTEM",
+      "description": null,
+      "html_url": "https://github.com/darktune/TITANIC-SURVIVAL-PREDICTION-SYSTEM",
+      "language": "Jupyter Notebook",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/LLM_QA_ABRAHAMTOLUWANI_22cg031804",
+      "description": "new repo",
+      "html_url": "https://github.com/darktune/LLM_QA_ABRAHAMTOLUWANI_22cg031804",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/Wine-Cultivar-Origin-Prediction-System",
+      "description": null,
+      "html_url": "https://github.com/darktune/Wine-Cultivar-Origin-Prediction-System",
+      "language": "Jupyter Notebook",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/house-prediction",
+      "description": "Config files for my GitHub profile.",
+      "html_url": "https://github.com/darktune/house-prediction",
+      "language": "Jupyter Notebook",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/ai-breast-cancer",
+      "description": "csc415",
+      "html_url": "https://github.com/darktune/ai-breast-cancer",
+      "language": "Jupyter Notebook",
+      "archived": false
+    },
+    {
+      "full_name": "darktune/ZOF-ZEOROF-FUNCTIONS-",
+      "description": "NEW REPO",
+      "html_url": "https://github.com/darktune/ZOF-ZEOROF-FUNCTIONS-",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/ZOF-ASSIGNMENT",
+      "description": null,
+      "html_url": "https://github.com/darktune/ZOF-ASSIGNMENT",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "darktune/Face-_detection_emotion_python_10-11-25",
+      "description": null,
+      "html_url": "https://github.com/darktune/Face-_detection_emotion_python_10-11-25",
+      "language": "Python",
+      "archived": false
+    }
+  ],
+  "stars": [
+    {
+      "full_name": "JuliusBrussee/caveman",
+      "description": "🪨 why use many token when few token do trick — Claude Code skill that cuts 65% of tokens by talking like caveman",
+      "html_url": "https://github.com/JuliusBrussee/caveman",
+      "language": "Go",
+      "archived": false
+    },
+    {
+      "full_name": "wilpel/caveman-compression",
+      "description": "Caveman Compression is a semantic compression method for LLM contexts. It removes predictable grammar while preserving the unpredictable, factual content that defines meaning.",
+      "html_url": "https://github.com/wilpel/caveman-compression",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "JuliusBrussee/caveman-code",
+      "description": "Frozen — terminal coding agent measured at 1.93× fewer tokens than Codex CLI. Still works; active development moved to JuliusBrussee/caveman (caveman wrap).",
+      "html_url": "https://github.com/JuliusBrussee/caveman-code",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "trimstray/the-book-of-secret-knowledge",
+      "description": "A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.",
+      "html_url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "react/react",
+      "description": "The library for web and native user interfaces.",
+      "html_url": "https://github.com/react/react",
+      "language": "JavaScript",
+      "archived": false
+    },
+    {
+      "full_name": "affaan-m/ECC",
+      "description": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "html_url": "https://github.com/affaan-m/ECC",
+      "language": "JavaScript",
+      "archived": false
+    },
+    {
+      "full_name": "mattpocock/skills",
+      "description": "Skills for Real Engineers. Straight from my .agents directory.",
+      "html_url": "https://github.com/mattpocock/skills",
+      "language": "Shell",
+      "archived": false
+    },
+    {
+      "full_name": "996icu/996.ICU",
+      "description": "Repo for counting stars and contributing. Press F to pay respect to glorious developers.",
+      "html_url": "https://github.com/996icu/996.ICU",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "obra/superpowers",
+      "description": "An agentic skills framework & software development methodology that works.",
+      "html_url": "https://github.com/obra/superpowers",
+      "language": "Shell",
+      "archived": false
+    },
+    {
+      "full_name": "cocos2d/cocos2d-x",
+      "description": "Cocos2d-x is a suite of open-source, cross-platform, game-development tools utilized by millions of developers across the globe. Its core has evolved to serve as the foundation for Cocos Creator 1.x & 2.x.",
+      "html_url": "https://github.com/cocos2d/cocos2d-x",
+      "language": "C++",
+      "archived": false
+    },
+    {
+      "full_name": "godotengine/godot",
+      "description": "Godot Engine – Multi-platform 2D and 3D game engine",
+      "html_url": "https://github.com/godotengine/godot",
+      "language": "C++",
+      "archived": false
+    },
+    {
+      "full_name": "phasehq/console",
+      "description": "Secrets management for teams and AI agents.",
+      "html_url": "https://github.com/phasehq/console",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "lobehub/lobehub",
+      "description": "🤯 LobeHub is your Chief Agent Operator, organizing your agents into 7×24 operations by hiring, scheduling, and reporting on your entire AI team.",
+      "html_url": "https://github.com/lobehub/lobehub",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "projectdiscovery/katana",
+      "description": "A next-generation crawling and spidering framework.",
+      "html_url": "https://github.com/projectdiscovery/katana",
+      "language": "Go",
+      "archived": false
+    },
+    {
+      "full_name": "deepinsight/insightface",
+      "description": "State-of-the-art 2D and 3D Face Analysis Project",
+      "html_url": "https://github.com/deepinsight/insightface",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "steven2358/awesome-generative-ai",
+      "description": "A curated list of modern Generative Artificial Intelligence projects and services",
+      "html_url": "https://github.com/steven2358/awesome-generative-ai",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "sudheerj/reactjs-interview-questions",
+      "description": "List of top 500 ReactJS Interview Questions & Answers....Coding exercise questions are coming soon!!",
+      "html_url": "https://github.com/sudheerj/reactjs-interview-questions",
+      "language": "JavaScript",
+      "archived": false
+    },
+    {
+      "full_name": "SimplifyJobs/Summer2027-Internships",
+      "description": "Summer 2027 software engineering, data science, AI, quant, product management, and hardware internship postings. Updated daily by Simplify and Pitt CSC.",
+      "html_url": "https://github.com/SimplifyJobs/Summer2027-Internships",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "memgraph/memgraph",
+      "description": "High-performance open-source in-memory graph database for GraphRAG, AI memory, agentic AI, and real-time graph analytics. Cypher-compatible, built in C++.",
+      "html_url": "https://github.com/memgraph/memgraph",
+      "language": "C++",
+      "archived": false
+    },
+    {
+      "full_name": "bobeff/open-source-games",
+      "description": "A list of open source games.",
+      "html_url": "https://github.com/bobeff/open-source-games",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "jellyfin/jellyfin",
+      "description": "The Free Software Media System - Server Backend & API",
+      "html_url": "https://github.com/jellyfin/jellyfin",
+      "language": "C#",
+      "archived": false
+    },
+    {
+      "full_name": "antoniaci/blackbird",
+      "description": "An OSINT tool to search for accounts by username and email in social networks.",
+      "html_url": "https://github.com/antoniaci/blackbird",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "authelia/authelia",
+      "description": "The Single Sign-On Multi-Factor portal for web apps. OpenID Certified™ and Post-Quantum Cryptography Ready.",
+      "html_url": "https://github.com/authelia/authelia",
+      "language": "Go",
+      "archived": false
+    },
+    {
+      "full_name": "armory3d/armorpaint",
+      "description": "Graphics Creation Tools",
+      "html_url": "https://github.com/armory3d/armorpaint",
+      "language": "C",
+      "archived": false
+    },
+    {
+      "full_name": "jwasham/coding-interview-university",
+      "description": "A complete computer science study plan to become a software engineer.",
+      "html_url": "https://github.com/jwasham/coding-interview-university",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "nilbuild/developer-roadmap",
+      "description": "Interactive roadmaps, guides and other educational content to help developers grow in their careers.",
+      "html_url": "https://github.com/nilbuild/developer-roadmap",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "donnemartin/system-design-primer",
+      "description": "Learn how to design large-scale systems. Prep for the system design interview.  Includes Anki flashcards.",
+      "html_url": "https://github.com/donnemartin/system-design-primer",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "openclaw/openclaw",
+      "description": "The AI that really does things. Any OS. Any Platform. The lobster way. 🦞 ",
+      "html_url": "https://github.com/openclaw/openclaw",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "EbookFoundation/free-programming-books",
+      "description": ":books: Freely available programming books",
+      "html_url": "https://github.com/EbookFoundation/free-programming-books",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "freeCodeCamp/freeCodeCamp",
+      "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
+      "html_url": "https://github.com/freeCodeCamp/freeCodeCamp",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "codecrafters-io/build-your-own-x",
+      "description": "Master programming by recreating your favorite technologies from scratch.",
+      "html_url": "https://github.com/codecrafters-io/build-your-own-x",
+      "language": "Markdown",
+      "archived": false
+    },
+    {
+      "full_name": "public-apis/public-apis",
+      "description": "A collective list of free APIs",
+      "html_url": "https://github.com/public-apis/public-apis",
+      "language": "Python",
+      "archived": false
+    },
+    {
+      "full_name": "sindresorhus/awesome",
+      "description": "😎 Awesome lists about all kinds of interesting topics [NOTE: Pull requests are temporarily disabled until I have a chance to catch up with the existing ones]",
+      "html_url": "https://github.com/sindresorhus/awesome",
+      "language": null,
+      "archived": false
+    },
+    {
+      "full_name": "Infisical/infisical",
+      "description": "Infisical is the open-source platform for secrets, certificates, and privileged access management.",
+      "html_url": "https://github.com/Infisical/infisical",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "n8n-io/n8n",
+      "description": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
+      "html_url": "https://github.com/n8n-io/n8n",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "cloudflare/cloudflare-os",
+      "description": "Agent workspace built on Cloudflare Workers for creating documents, building apps, and running agents with your company’s context and systems.",
+      "html_url": "https://github.com/cloudflare/cloudflare-os",
+      "language": "TypeScript",
+      "archived": false
+    },
+    {
+      "full_name": "Mesh-LLM/mesh-llm",
+      "description": "Distributed AI/LLM for the people. Share compute privately or publicly to power your agents and chat.",
+      "html_url": "https://github.com/Mesh-LLM/mesh-llm",
+      "language": "Rust",
+      "archived": false
+    }
+  ]
+}

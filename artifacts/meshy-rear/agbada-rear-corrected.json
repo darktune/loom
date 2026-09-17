@@ -1,0 +1,17 @@
+{
+  "source_sha256": "78fded10b3487b5b5da818ab69433c9a1afa3b219b431c10848174927d097481",
+  "output_sha256": "3a20e538f8a9725b2929aa81b69edfa3c8ae38ecead4ebc7944499ef17b79ad6",
+  "vertices": 388513,
+  "triangles": 723326,
+  "geometry_unchanged": true,
+  "changed_texture_pixels": 223611,
+  "texture_pixels": 4194304,
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "output_bytes": 28616172,
+  "front_vertex_texture_samples": 243509,
+  "front_samples_changed": 0,
+  "method": "Manual photograph projection; visual approximation only"
+}

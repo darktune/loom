@@ -813,3 +813,8 @@ textarea {
     width: auto;
   }
 }
+
+.brand-logo { display: block; width: 174px; height: 58px; object-fit: contain; }
+.brand-block { text-decoration: none; flex-shrink: 0; }
+.brand-block:focus-visible { outline: 2px solid #c9a96e; outline-offset: 6px; border-radius: 4px; }
+@media (max-width: 560px) { .brand-logo { width: 138px; height: 46px; } }

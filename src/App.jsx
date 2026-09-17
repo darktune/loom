@@ -1,4 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import ReferenceUpload, { ReferenceCard, usePhotoUrl } from './components/ReferenceUpload';
+import ConstructionPanel from './components/ConstructionPanel';
+import { defaultConstruction } from './lib/construction';
+import GenerationPanel from './components/GenerationPanel';
+import { useGeneration } from './lib/useGeneration';
+import GarmentViewer from './components/GarmentViewer';
+import { validateMeasurements } from './lib/sizing';
 
 const currencies = {
   USD: { label: 'USD', symbol: '$', rate: 1 },
@@ -31,12 +38,59 @@ function formatPrice(value, currency) {
 }
 
 export default function App() {
+  const [construction, setConstruction] = useState(defaultConstruction);
+  const [appliedConstruction, setAppliedConstruction] = useState(defaultConstruction);
   const [currency, setCurrency] = useState('USD');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [wizardOpen, setWizardOpen] = useState(true);
+  const [wizardOpen, setWizardOpen] = useState(false);
   const [wizardStep, setWizardStep] = useState(0);
   const [measurements, setMeasurements] = useState(initialMeasurements);
+  const [appliedMeasurements, setAppliedMeasurements] = useState(initialMeasurements);
+  const measurementErrors = validateMeasurements(measurements);
   const [selectedGarment, setSelectedGarment] = useState(garmentDetails[0]);
+  const [references, setReferences] = useState([]);
+  const reference = references.find((item) => item.file.type.startsWith('image/'))?.file || null;
+  const [referenceBusy, setReferenceBusy] = useState(false);
+  const [generated, setGenerated] = useState(null);
+  const generation = useGeneration(setGenerated);
+  const [useFabric, setUseFabric] = useState(false);
+  const referenceUrl = usePhotoUrl(reference);
+  const [prompt, setPrompt] = useState('Fitted agbada with a softened shoulder and sculpted drape.');
+  const [info, setInfo] = useState(null);
+  const [orderSaved, setOrderSaved] = useState(false);
+  const [exportedBrief, setExportedBrief] = useState('');
+  const showroom = useRef();
+  const dialog = useRef();
+  const openSizing = () => { setInfo(null); setCheckoutOpen(false); setWizardStep(0); setWizardOpen(true); };
+  const enterAtelier = () => { setInfo(null); setCheckoutOpen(false); setWizardOpen(false); showroom.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); showroom.current?.focus({ preventScroll: true }); };
+  const openCheckout = () => { setWizardOpen(false); setInfo(null); setOrderSaved(false); setCheckoutOpen(true); };
+  useEffect(() => {
+    if (!wizardOpen && !checkoutOpen && !info) return;
+    const previous = document.activeElement;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialog.current?.querySelector('button')?.focus();
+    const handleKey = (event) => {
+      if (event.key === 'Escape') { setWizardOpen(false); setCheckoutOpen(false); setInfo(null); }
+      if (event.key === 'Tab') {
+        const elements = [...(dialog.current?.querySelectorAll('button:not(:disabled), input:not([hidden]), select, textarea, [tabindex="0"]') || [])];
+        const first = elements[0], last = elements.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', handleKey); previous?.focus(); };
+  }, [wizardOpen, checkoutOpen, info]);
+  const downloadBrief = () => {
+    const brief = { garment: selectedGarment.title, measurements: appliedMeasurements, construction: appliedConstruction, units: { length: 'cm', weight: 'kg' }, prompt, references: references.map((item) => ({ filename: item.file.name, type: item.file.type, role: item.role })), generation: generated ? { taskId: generated.taskId, sourceBrief: generated.snapshot } : null, note: 'Local design brief only. No order placed and no payment collected. Model adjustment is approximate, not validated fit.' };
+    const serialized = JSON.stringify(brief, null, 2);
+    setExportedBrief(serialized);
+    const url = URL.createObjectURL(new Blob([serialized], { type: 'application/json' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'loom-design-brief.json'; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setOrderSaved(true);
+  };
 
   const quotedPrice = useMemo(
     () => formatPrice(selectedGarment.price, currency),
@@ -50,6 +104,7 @@ export default function App() {
   };
 
   const nextStep = () => {
+    if (Object.keys(measurementErrors).length) return;
     setWizardStep((step) => Math.min(step + 1, wizardSteps.length - 1));
   };
 
@@ -63,16 +118,15 @@ export default function App() {
       <div className="ambient ambient-two" />
 
       <header className="topbar">
-        <div className="brand-block">
-          <div className="brand-mark">L</div>
-          <span className="brand-name">LOOM</span>
-        </div>
+        <a className="brand-block" href="#" aria-label="loom — The Virtual Atelier" onClick={(event) => { event.preventDefault(); enterAtelier(); }}>
+          <img className="brand-logo" src="/brand/loom-wordmark.png" alt="loom" width="174" height="58" />
+        </a>
 
         <nav className="topnav" aria-label="Main navigation">
-          <button className="nav-link active">Atelier</button>
-          <button className="nav-link">Sizing</button>
-          <button className="nav-link">Tailors</button>
-          <button className="nav-link">Escrow</button>
+          <button className="nav-link" onClick={enterAtelier}>Atelier</button>
+          <button className="nav-link" onClick={openSizing}>Sizing</button>
+          <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Tailors'); }}>Tailors</button>
+          <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Escrow'); }}>Escrow</button>
         </nav>
 
         <div className="header-actions">
@@ -88,8 +142,8 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button className="ghost-button small" type="button" onClick={() => setWizardOpen(true)}>
-            AI sizing
+          <button className="ghost-button small" type="button" onClick={openSizing}>
+            Sizing preview
           </button>
         </div>
       </header>
@@ -99,53 +153,42 @@ export default function App() {
           <p className="eyebrow">The Virtual Atelier</p>
           <h1>Luxury fashion, reimagined in 3D.</h1>
           <p className="subtitle">
-            Explore bespoke silhouettes, preview tailored fit in real time, and pay with
-            protected escrow in a single immersive showroom.
+            Explore bespoke silhouettes and preview your proportions in an interactive showroom. Save a design brief for your tailor.
           </p>
 
           <div className="cta-row">
-            <button className="primary-button" type="button" onClick={() => setCheckoutOpen(true)}>
+            <button className="primary-button" type="button" onClick={enterAtelier}>
               Enter the Atelier
             </button>
-            <button className="ghost-button" type="button" onClick={() => setWizardOpen(true)}>
+            <button className="ghost-button" type="button" onClick={openSizing}>
               Custom fit
             </button>
           </div>
 
           <div className="stats-row">
             <div>
-              <strong>4.9/5</strong>
-              <span>Client rating</span>
+              <strong>3D</strong>
+              <span>Interactive previews</span>
             </div>
             <div>
-              <strong>48h</strong>
-              <span>Design turnaround</span>
+              <strong>Custom</strong>
+              <span>Measurement profiles</span>
             </div>
             <div>
-              <strong>100%</strong>
-              <span>Escrow protected</span>
+              <strong>Demo</strong>
+              <span>No payments collected</span>
             </div>
           </div>
         </section>
 
-        <section className="showroom-panel" aria-label="Featured garment">
+        <section ref={showroom} tabIndex={-1} className="showroom-panel" aria-label="Featured garment">
           <div className="floating-card card-one">
-            <span className="chip">Live fit</span>
-            <strong>Tailor synced</strong>
+            <span className="chip">3D studio</span>
+            <strong>Explore your silhouette</strong>
           </div>
 
           <div className="product-frame">
-            <div className="halo" />
-            <div className="garment-figure">
-              <div className="head" />
-              <div className="torso" />
-              <div className="arm arm-left" />
-              <div className="arm arm-right" />
-              <div className="skirt" />
-              <div className="feature-dot dot-one" />
-              <div className="feature-dot dot-two" />
-              <div className="feature-dot dot-three" />
-            </div>
+            <GarmentViewer garment={selectedGarment} measurements={appliedMeasurements} construction={appliedConstruction} fabricUrl={useFabric ? referenceUrl : ''} generated={generated} />
           </div>
 
           <div className="floating-card card-two">
@@ -174,15 +217,24 @@ export default function App() {
         ))}
       </section>
 
+      <div className="order-actions"><p>Preview prices · Fixed demo rate: $1 = ₦1,500</p><button className="primary-button" onClick={openCheckout}>Review selected garment</button></div>
+
+      {info && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={info}><div className="modal-card" ref={dialog}>
+        <button className="close-button" onClick={() => setInfo(null)} aria-label="Close information">×</button>
+        <h2>{info === 'Tailors' ? "Abraham’s Collection" : 'Payments & escrow'}</h2>
+        <p>{info === 'Tailors' ? 'Our flagship design partner. Prepare your measurements and reference, then download a brief to share yourself. Tailor matching and live chat are not connected yet.' : 'This is a showroom prototype. Kora payments and escrow are not connected, and no funds are collected or protected here yet.'}</p>
+        {info === 'Tailors' && <button className="primary-button" onClick={openSizing}>Prepare my fit</button>}
+      </div></div>}
+
       {wizardOpen && (
         <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Sizing wizard">
-          <div className="modal-card">
+          <div className="modal-card" ref={dialog}>
             <button className="close-button" type="button" onClick={() => setWizardOpen(false)} aria-label="Close sizing wizard">
               ×
             </button>
 
             <div className="modal-header">
-              <p className="eyebrow">AI sizing</p>
+              <p className="eyebrow">Sizing preview</p>
               <h2>Build your perfect digital fit</h2>
             </div>
 
@@ -200,56 +252,57 @@ export default function App() {
               <div className="wizard-form">
                 <div className="field-row">
                   <label>
-                    Height
+                    Height (cm)
                     <input type="number" value={measurements.height} onChange={(e) => updateMeasurement('height', e.target.value)} />
                   </label>
                   <label>
-                    Weight
+                    Weight (kg)
                     <input type="number" value={measurements.weight} onChange={(e) => updateMeasurement('weight', e.target.value)} />
                   </label>
                 </div>
                 <div className="field-row">
                   <label>
-                    Chest
+                    Chest (cm)
                     <input type="number" value={measurements.chest} onChange={(e) => updateMeasurement('chest', e.target.value)} />
                   </label>
                   <label>
-                    Waist
+                    Waist (cm)
                     <input type="number" value={measurements.waist} onChange={(e) => updateMeasurement('waist', e.target.value)} />
                   </label>
                 </div>
                 <label>
-                  Hip
+                  Hip (cm)
                   <input type="number" value={measurements.hip} onChange={(e) => updateMeasurement('hip', e.target.value)} />
                 </label>
+                {Object.entries(measurementErrors).map(([field, message]) => <p className="measurement-error" role="alert" key={field}>{field}: {message}</p>)}
               </div>
             )}
 
             {wizardStep === 1 && (
               <div className="upload-panel">
-                <div className="upload-area">
-                  <span>Drop reference photo</span>
-                  <small>or browse from your gallery</small>
-                </div>
+                <ReferenceUpload items={references} onChange={setReferences} onBusyChange={setReferenceBusy} />
+                {reference && <label className="fabric-option"><input type="checkbox" checked={useFabric} onChange={(event) => setUseFabric(event.target.checked)} /> Use this image as fabric texture on the studio mannequin</label>}
+                <p className="reference-help">The optional texture preview uses the first image and does not change geometry. To create new geometry, assign generation views and use Generate below.</p>
                 <label className="prompt-box">
                   Describe your ideal silhouette
-                  <textarea defaultValue="Fitted agbada with a softened shoulder and sculpted drape." />
+                  <textarea value={prompt} maxLength={2000} onChange={(event) => setPrompt(event.target.value)} />
                 </label>
+                <ConstructionPanel measurements={measurements} settings={construction} onChange={setConstruction} references={references} />
+                <GenerationPanel generation={generation} items={references} measurements={measurements} prompt={prompt} construction={construction} disabled={referenceBusy || Object.keys(measurementErrors).length > 0} />
               </div>
             )}
 
             {wizardStep === 2 && (
               <div className="preview-panel">
-                <div className="mini-model">
-                  <div className="model-head" />
-                  <div className="model-body" />
-                  <div className="model-skirt" />
-                </div>
+                <GarmentViewer garment={selectedGarment} measurements={measurements} construction={construction} compact fabricUrl={useFabric ? referenceUrl : ''} generated={generated} />
                 <div className="preview-summary">
-                  <strong>Suggested fit</strong>
+                  <strong>Proportion preview</strong>
+                  <p>{references.length} references in this design brief.</p>
+                  {generated && <p>Generated model is available. Select Generated garment to inspect it and enable approximate fitting.</p>}
+                  {prompt && <p>Design brief: {prompt}</p>}
                   <p>
-                    Based on your measurements, the tailored silhouette will sit 8% closer at
-                    the waist with a more relaxed drape through the shoulder.
+                    Height {measurements.height} cm · Chest {measurements.chest} cm · Waist {measurements.waist} cm · Hip {measurements.hip} cm.
+                    This illustrative model uses your measurements, not an AI fit prediction or a cloth simulation. Weight is recorded but does not determine body shape. Confirm final sizing with your tailor.
                   </p>
                 </div>
               </div>
@@ -259,7 +312,7 @@ export default function App() {
               <button type="button" className="ghost-button small" onClick={previousStep} disabled={wizardStep === 0}>
                 Back
               </button>
-              <button type="button" className="primary-button" onClick={wizardStep === wizardSteps.length - 1 ? () => setWizardOpen(false) : nextStep}>
+              <button type="button" className="primary-button" disabled={referenceBusy || Object.keys(measurementErrors).length > 0} onClick={wizardStep === wizardSteps.length - 1 ? () => { setAppliedMeasurements({ ...measurements }); setAppliedConstruction({ ...construction }); setWizardOpen(false); } : nextStep}>
                 {wizardStep === wizardSteps.length - 1 ? 'Finish' : 'Continue'}
               </button>
             </div>
@@ -268,11 +321,11 @@ export default function App() {
       )}
 
       {checkoutOpen && (
-        <aside className="checkout-drawer" aria-label="Checkout panel">
+        <aside ref={dialog} className="checkout-drawer" role="dialog" aria-modal="true" aria-label="Order preview">
           <div className="drawer-header">
             <div>
-              <p className="eyebrow">Secure checkout</p>
-              <h3>Complete your order</h3>
+              <p className="eyebrow">Demo order preview</p>
+              <h3>Review your design</h3>
             </div>
             <button type="button" className="close-button" onClick={() => setCheckoutOpen(false)} aria-label="Close checkout">
               ×
@@ -289,27 +342,15 @@ export default function App() {
           </div>
 
           <div className="info-badge">
-            Bespoke escrow protected ✓
+            Payments unavailable · No order will be placed
           </div>
 
-          <div className="checkout-form">
-            <label>
-              Full name
-              <input type="text" defaultValue="Ada Okafor" />
-            </label>
-            <label>
-              Delivery country
-              <input type="text" defaultValue="United Kingdom" />
-            </label>
-            <label>
-              Payment method
-              <input type="text" defaultValue="Kora Virtual Account" />
-            </label>
-          </div>
+          <div className="checkout-form"><p>Height {appliedMeasurements.height} cm · Chest {appliedMeasurements.chest} cm · Waist {appliedMeasurements.waist} cm · Hip {appliedMeasurements.hip} cm</p><p>{prompt}</p><div className="reference-grid">{references.map((item) => <ReferenceCard key={item.id} item={item} />)}</div><p>The downloaded brief includes reference filenames and generation task details. Share the files separately with your tailor.</p></div>
 
-          <button type="button" className="primary-button wide" onClick={() => setCheckoutOpen(false)}>
-            Confirm & pay
+          <button type="button" className="primary-button wide" onClick={downloadBrief}>
+            Download design brief
           </button>
+          {orderSaved && <><p role="status">Download requested. If your browser blocks it, copy the brief below. No order was placed or payment collected.</p><label className="prompt-box">Copyable design brief<textarea readOnly value={exportedBrief} rows={8} onFocus={(event) => event.target.select()} /></label></>}
         </aside>
       )}
     </div>

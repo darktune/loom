@@ -1,0 +1,332 @@
+[
+  {
+    "name": "playwright",
+    "status": "installed",
+    "files": [
+      {
+        "path": "LICENSE.txt",
+        "sha256": "9A7110FC2D2F964038E5DC49128F908F29F47A574C961CBA16085914E879CBDA",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "NOTICE.txt",
+        "sha256": "417D5D3372914ECFD9FE102AC1D7DC2119253209F9718D6C222F616876C1904B",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "0FFAABCC8E0990627C4725F18BF1C7955534A796C1C199E872909DE2013CE6A8",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "DDDA43720FC566FFFA45264BE8F17F7745A3CEE28D5245D41D3B963BC9967230",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "assets\\playwright-small.svg",
+        "sha256": "F1D213C0F76735D8272C3D3E9FBF71FE7B894E2D1588907044C780F2C33A9732",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "assets\\playwright.png",
+        "sha256": "521669F088C838196C6C852CCC9ABDD7234D8F37FC9A8A7A9AF7DB2D50193381",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "references\\cli.md",
+        "sha256": "7C069A8206BA20B9DDBDC42436B04DE30BB3AA4A825BA98680757EE62E954900",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "references\\workflows.md",
+        "sha256": "A2B5835A00EBEE3906C146ADF7F764F7718EA3F89A8702D86EAA135DFE0FC8C2",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "scripts\\playwright_cli.sh",
+        "sha256": "AA3FDFF5D0E4556177F4DFD5F04117E772AA54F94B6A2E34B6C0EDF629C6B9B5",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "caveman",
+    "status": "preserved-existing",
+    "files": [
+      {
+        "path": "README.md",
+        "sha256": "E86F4B56765FC288859A8A1F3E3814C990BA920B326C40C55667B56D44C58C1E",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "C4D7354B4B063D54601FCDD5097A5B1713D1A1A2E386AC39EFA438AA1FFEF8CE",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "systematic-debugging",
+    "status": "installed",
+    "files": [
+      {
+        "path": "condition-based-waiting-example.ts",
+        "sha256": "40AE5EBE497FDF310200E43FE986552546D0A22837C0D39E855DB1CFD33EB88E",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "condition-based-waiting.md",
+        "sha256": "E89FEC8400D6CD50F43407CEC9FAB50976BA4D55D0EC2EB51C0BD68036B54C26",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "CREATION-LOG.md",
+        "sha256": "C24733A5B1821BD6BED1FC950261F0B9F4E90097E0BBB96459D8179713730789",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "defense-in-depth.md",
+        "sha256": "1E175FB86FC357E58C6AEBF5441E481E1B7868B4380C0456B63A17EEFBD18BA7",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "find-polluter.sh",
+        "sha256": "DD7B8F13C4CC2A24B33FF87B18DA9248F3E1C80A085C3316224F69FF0FA5C43C",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "root-cause-tracing.md",
+        "sha256": "6B0622269E098CA1399E123E553FD385F0B6412D88EF0E9C4F5A8EA9CF1CEC7B",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "808FC5717AA88AD65EFFF312B11C186294D3E6EE301AFB584E2F86599B137787",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "test-academic.md",
+        "sha256": "FE2BA480D78AC0D686DC025F41C2A32A43D642BF533F91B0C6053A04D35D6486",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "test-pressure-1.md",
+        "sha256": "0B6A915DB0054577819834C79BE9EB614E97BDDBA10D73768E1FBE91CFED048A",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "test-pressure-2.md",
+        "sha256": "B2030AEFFBA07050E8AD573DDF87486457C4A016A786BB326235BEBD856F2016",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "test-pressure-3.md",
+        "sha256": "96B50A52E2C7989C9CF20FB752C47C1E9A3A70DC362F8F7989F8F5B64DAC7708",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "verification-before-completion",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "2BEFE7FC55BCADAA3D97DD9E8EFEB633D2561C0EBE74C5A8B17C4D9E7E4520B3",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "test-driven-development",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "BF1B8216E523851A411E91D429A7C1C2A173E79D88957BC78E348218D50EDD54",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "writing-good-tests.md",
+        "sha256": "51471C853306FF92CA8BB41DCAEA05F31C0E46B03651F8F3C99754B7172F4AE1",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "codebase-design",
+    "status": "installed",
+    "files": [
+      {
+        "path": "DEEPENING.md",
+        "sha256": "F3DD099CE99289BD213914D8EE3E2429B78309C3957CA4583F7659551B1D53C1",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "DESIGN-IT-TWICE.md",
+        "sha256": "8E740BF98446DBD4DFDC132AC4346D9A7EEDAF93DE6A495889171CF7F99F16BD",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "2C20617F87EC8AF6A434859F381B2F061A69B530444E74EB39E78BB016A6D1E2",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "EDEBC9E4FCFE102114012575EAA9600B9B5FD08C311664F389C36E7BC717740F",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "domain-modeling",
+    "status": "installed",
+    "files": [
+      {
+        "path": "ADR-FORMAT.md",
+        "sha256": "944C92AA790E8FBDC9199640B170979ABB8A34BA8D0FE18C2A01A63BCE140CA0",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "CONTEXT-FORMAT.md",
+        "sha256": "17AB16CE783E4D2801EE52FD9ACDF550CBF44DE65AE76797A93943BBEDF22A13",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "327A2B50620E2FD70ABC6893CD6965E76B20F8D0ADB0DC2C8D5EB3845EFB643E",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "F6BF2AA996C6E6F53FDD0708E18A0D16A56AED8322CCA59FEDBE3C0D2C75F06B",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "improve-codebase-architecture",
+    "status": "installed",
+    "files": [
+      {
+        "path": "HTML-REPORT.md",
+        "sha256": "581E8BB5A521E46BBDA8CA7E19B15948BED882187108092EBB90C62513B77528",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "SKILL.md",
+        "sha256": "D1AC25511A936FF4250A48DBCEFDA363837D6BB9321B3CBA73DF99FA37270A75",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "C8CB20F68EBF0EDB4E497BC11AE5FCAA196004E661CD189015B04F4109CED7F1",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "grilling",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "10FF989E7498B23B5ACB49D5048F11DCD906757D2F79C5CDF8A00001381296F2",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "1411D7DF7D99B7E621A1FF8283C8133CC2464BE63D064E52D8CE169C6800EE9B",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "api-design",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "3D6B2D9955EDB1032064AC577E802B4695FDC14AA98532B577DDC741FD8F1D9F",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "46C8BC7B5CCEA34CC3BA4F90E36C36C0AD6E8109084EE77911A54BF3D6DA1AC5",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "frontend-patterns",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "8EE53FB139CD5BCD7C6173D1C75CBF643173934009B95D043EFE43AB55993CD0",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "agents\\openai.yaml",
+        "sha256": "D4AED493C056590554115ADB6C6BD2675BCDE8DDA2BFC7E6437EC7837FB6EF16",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "database-migrations",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "AD7F2F04CA03E592A16E2A539D8C6E90BF4E08892408820CE99A53E9D07775DE",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "postgres-patterns",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "9C8C391AE9E9AA87FAA7CA091E1D395C97766DF14080D0BFBEA8A97721776163",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "deployment-patterns",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "B864ABD1954570C4A469B7E1DEB897E57858D25DB2FD98D035FF7BCA4A15B9B6",
+        "matchesStagedSource": true
+      }
+    ]
+  },
+  {
+    "name": "applied-engineering",
+    "status": "installed",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "B8143BC934818D9A946A221438C51429EAAF0C07EC9DE776B52AB0470EA09404",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "references\\resources.md",
+        "sha256": "5ACA0EB42B6E3A3E8468244699AA048C0E8DE4B9EA179A77E66892114923DB81",
+        "matchesStagedSource": true
+      },
+      {
+        "path": "references\\rick-the-engineer.md",
+        "sha256": "DFE2B439ADBFAF1FCB5FBAAFB2BC0583DA66EF2BBB0B72F3BC821BD2810E0058",
+        "matchesStagedSource": true
+      }
+    ]
+  }
+]
