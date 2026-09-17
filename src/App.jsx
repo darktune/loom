@@ -6,6 +6,7 @@ import GenerationPanel from './components/GenerationPanel';
 import { useGeneration } from './lib/useGeneration';
 import GarmentViewer from './components/GarmentViewer';
 import { validateMeasurements } from './lib/sizing';
+import LandingPage from './components/landing/LandingPage';
 
 const currencies = {
   USD: { label: 'USD', symbol: '$', rate: 1 },
@@ -38,6 +39,7 @@ function formatPrice(value, currency) {
 }
 
 export default function App() {
+  const [viewMode, setViewMode] = useState(() => (typeof window !== 'undefined' && window.location.pathname === '/atelier' ? 'atelier' : 'landing'));
   const [construction, setConstruction] = useState(defaultConstruction);
   const [appliedConstruction, setAppliedConstruction] = useState(defaultConstruction);
   const [currency, setCurrency] = useState('USD');
@@ -61,9 +63,43 @@ export default function App() {
   const [exportedBrief, setExportedBrief] = useState('');
   const showroom = useRef();
   const dialog = useRef();
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setViewMode(window.location.pathname === '/atelier' ? 'atelier' : 'landing');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const openSizing = () => { setInfo(null); setCheckoutOpen(false); setWizardStep(0); setWizardOpen(true); };
-  const enterAtelier = () => { setInfo(null); setCheckoutOpen(false); setWizardOpen(false); showroom.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); showroom.current?.focus({ preventScroll: true }); };
+  
+  const goLanding = () => {
+    setViewMode('landing');
+    if (window.location.pathname !== '/') {
+      window.history.pushState({}, '', '/');
+    }
+    setInfo(null);
+    setCheckoutOpen(false);
+    setWizardOpen(false);
+  };
+
+  const enterAtelier = () => {
+    setViewMode('atelier');
+    if (window.location.pathname !== '/atelier') {
+      window.history.pushState({}, '', '/atelier');
+    }
+    setInfo(null);
+    setCheckoutOpen(false);
+    setWizardOpen(false);
+    setTimeout(() => {
+      showroom.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showroom.current?.focus({ preventScroll: true });
+    }, 50);
+  };
+
   const openCheckout = () => { setWizardOpen(false); setInfo(null); setOrderSaved(false); setCheckoutOpen(true); };
+
   useEffect(() => {
     if (!wizardOpen && !checkoutOpen && !info) return;
     const previous = document.activeElement;
@@ -82,6 +118,7 @@ export default function App() {
     document.addEventListener('keydown', handleKey);
     return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', handleKey); previous?.focus(); };
   }, [wizardOpen, checkoutOpen, info]);
+
   const downloadBrief = () => {
     const brief = { garment: selectedGarment.title, measurements: appliedMeasurements, construction: appliedConstruction, units: { length: 'cm', weight: 'kg' }, prompt, references: references.map((item) => ({ filename: item.file.name, type: item.file.type, role: item.role })), generation: generated ? { taskId: generated.taskId, sourceBrief: generated.snapshot } : null, note: 'Local design brief only. No order placed and no payment collected. Model adjustment is approximate, not validated fit.' };
     const serialized = JSON.stringify(brief, null, 2);
@@ -117,112 +154,128 @@ export default function App() {
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
-      <header className="topbar">
-        <a className="brand-block" href="#" aria-label="loom — The Virtual Atelier" onClick={(event) => { event.preventDefault(); enterAtelier(); }}>
+      <header className={`topbar ${viewMode === 'landing' ? 'landing-topbar' : ''}`}>
+        <a className="brand-block" href="/" aria-label="loom — The Virtual Atelier" onClick={(event) => { event.preventDefault(); goLanding(); }}>
           <img className="brand-logo" src="/brand/loom-wordmark.png" alt="loom" width="174" height="58" />
         </a>
 
-        <nav className="topnav" aria-label="Main navigation">
-          <button className="nav-link" onClick={enterAtelier}>Atelier</button>
-          <button className="nav-link" onClick={openSizing}>Sizing</button>
-          <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Tailors'); }}>Tailors</button>
-          <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Escrow'); }}>Escrow</button>
-        </nav>
+        {viewMode === 'atelier' && (
+          <nav className="topnav" aria-label="Main navigation">
+            <button className="nav-link active" onClick={enterAtelier}>Atelier</button>
+            <button className="nav-link" onClick={openSizing}>Sizing</button>
+            <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Tailors'); }}>Tailors</button>
+            <button className="nav-link" onClick={openCheckout}>Checkout</button>
+          </nav>
+        )}
 
         <div className="header-actions">
-          <div className="currency-toggle" aria-label="Currency selector">
-            {Object.entries(currencies).map(([key, value]) => (
-              <button
-                key={key}
-                className={currency === key ? 'is-active' : ''}
-                onClick={() => setCurrency(key)}
-                type="button"
-              >
-                {value.label}
-              </button>
-            ))}
-          </div>
-          <button className="ghost-button small" type="button" onClick={openSizing}>
-            Sizing preview
+          {viewMode === 'atelier' && (
+            <div className="currency-toggle" aria-label="Currency selector">
+              {Object.entries(currencies).map(([key, value]) => (
+                <button
+                  key={key}
+                  className={currency === key ? 'is-active' : ''}
+                  onClick={() => setCurrency(key)}
+                  type="button"
+                >
+                  {value.label}
+                </button>
+              ))}
+            </div>
+          )}
+          <button className="primary-button small" type="button" onClick={viewMode === 'landing' ? enterAtelier : openSizing}>
+            {viewMode === 'landing' ? 'Enter Atelier' : 'Sizing preview'}
           </button>
         </div>
       </header>
 
-      <main className="main-layout">
-        <section className="hero-copy">
-          <p className="eyebrow">The Virtual Atelier</p>
-          <h1>Luxury fashion, reimagined in 3D.</h1>
-          <p className="subtitle">
-            Explore bespoke silhouettes and preview your proportions in an interactive showroom. Save a design brief for your tailor.
-          </p>
+      {viewMode === 'landing' ? (
+        <LandingPage
+          enterAtelier={enterAtelier}
+          openSizing={openSizing}
+          currency={currency}
+          setCurrency={setCurrency}
+          currencies={currencies}
+        />
+      ) : (
+        <>
+          <main className="main-layout">
+            <section className="hero-copy">
+              <p className="eyebrow">The Virtual Atelier</p>
+              <h1>Luxury fashion, reimagined in 3D.</h1>
+              <p className="subtitle">
+                Explore bespoke silhouettes and preview your proportions in an interactive showroom. Save a design brief for your tailor.
+              </p>
 
-          <div className="cta-row">
-            <button className="primary-button" type="button" onClick={enterAtelier}>
-              Enter the Atelier
-            </button>
-            <button className="ghost-button" type="button" onClick={openSizing}>
-              Custom fit
-            </button>
-          </div>
+              <div className="cta-row">
+                <button className="primary-button" type="button" onClick={openSizing}>
+                  Custom Fit Wizard
+                </button>
+                <button className="ghost-button" type="button" onClick={openCheckout}>
+                  Review Order
+                </button>
+              </div>
 
-          <div className="stats-row">
-            <div>
-              <strong>3D</strong>
-              <span>Interactive previews</span>
-            </div>
-            <div>
-              <strong>Custom</strong>
-              <span>Measurement profiles</span>
-            </div>
-            <div>
-              <strong>Demo</strong>
-              <span>No payments collected</span>
-            </div>
-          </div>
-        </section>
+              <div className="stats-row">
+                <div>
+                  <strong>3D</strong>
+                  <span>Interactive previews</span>
+                </div>
+                <div>
+                  <strong>Custom</strong>
+                  <span>Measurement profiles</span>
+                </div>
+                <div>
+                  <strong>Demo</strong>
+                  <span>No payments collected</span>
+                </div>
+              </div>
+            </section>
 
-        <section ref={showroom} tabIndex={-1} className="showroom-panel" aria-label="Featured garment">
-          <div className="floating-card card-one">
-            <span className="chip">3D studio</span>
-            <strong>Explore your silhouette</strong>
-          </div>
+            <section ref={showroom} tabIndex={-1} className="showroom-panel" aria-label="Featured garment">
+              <div className="floating-card card-one">
+                <span className="chip">3D studio</span>
+                <strong>Explore your silhouette</strong>
+              </div>
 
-          <div className="product-frame">
-            <GarmentViewer garment={selectedGarment} measurements={appliedMeasurements} construction={appliedConstruction} fabricUrl={useFabric ? referenceUrl : ''} generated={generated} />
-          </div>
+              <div className="product-frame">
+                <GarmentViewer garment={selectedGarment} measurements={appliedMeasurements} construction={appliedConstruction} fabricUrl={useFabric ? referenceUrl : ''} generated={generated} />
+              </div>
 
-          <div className="floating-card card-two">
-            <span className="tiny-label">Selected</span>
-            <strong>{selectedGarment.title}</strong>
-            <em>{quotedPrice}</em>
-          </div>
-        </section>
-      </main>
+              <div className="floating-card card-two">
+                <span className="tiny-label">Selected</span>
+                <strong>{selectedGarment.title}</strong>
+                <em>{quotedPrice}</em>
+              </div>
+            </section>
+          </main>
 
-      <section className="gallery-strip" aria-label="Garment collection">
-        {garmentDetails.map((garment) => (
-          <button
-            key={garment.title}
-            type="button"
-            className={`gallery-item ${selectedGarment.title === garment.title ? 'selected' : ''}`}
-            onClick={() => setSelectedGarment(garment)}
-          >
-            <span className="swatch" style={{ background: garment.color === 'Ivory' ? '#f5f1ea' : garment.color === 'Ash' ? '#d7d3cf' : '#2c2a2a' }} />
-            <div>
-              <strong>{garment.title}</strong>
-              <small>{garment.badge}</small>
-            </div>
-            <span>{formatPrice(garment.price, currency)}</span>
-          </button>
-        ))}
-      </section>
+          <section className="gallery-strip" aria-label="Garment collection">
+            {garmentDetails.map((garment) => (
+              <button
+                key={garment.title}
+                type="button"
+                className={`gallery-item ${selectedGarment.title === garment.title ? 'selected' : ''}`}
+                onClick={() => setSelectedGarment(garment)}
+              >
+                <span className="swatch" style={{ background: garment.color === 'Ivory' ? '#f5f1ea' : garment.color === 'Ash' ? '#d7d3cf' : '#2c2a2a' }} />
+                <div>
+                  <strong>{garment.title}</strong>
+                  <small>{garment.badge}</small>
+                </div>
+                <span>{formatPrice(garment.price, currency)}</span>
+              </button>
+            ))}
+          </section>
 
-      <div className="order-actions"><p>Preview prices · Fixed demo rate: $1 = ₦1,500</p><button className="primary-button" onClick={openCheckout}>Review selected garment</button></div>
+          <div className="order-actions"><p>Preview prices · Fixed demo rate: $1 = ₦1,500</p><button className="primary-button" onClick={openCheckout}>Review selected garment</button></div>
+        </>
+      )}
 
       {info && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={info}><div className="modal-card" ref={dialog}>
         <button className="close-button" onClick={() => setInfo(null)} aria-label="Close information">×</button>
-        <h2>{info === 'Tailors' ? "Abraham’s Collection" : 'Payments & escrow'}</h2>
-        <p>{info === 'Tailors' ? 'Our flagship design partner. Prepare your measurements and reference, then download a brief to share yourself. Tailor matching and live chat are not connected yet.' : 'This is a showroom prototype. Kora payments and escrow are not connected, and no funds are collected or protected here yet.'}</p>
+        <h2>{info === 'Tailors' ? 'Designers & Tailors' : 'Checkout & Orders'}</h2>
+        <p>{info === 'Tailors' ? 'Explore collections from independent designers on Loom. Prepare your measurements and reference files to generate tailor-ready briefs.' : 'This is a showroom prototype. Online order preview mode is active; no real payment is collected.'}</p>
         {info === 'Tailors' && <button className="primary-button" onClick={openSizing}>Prepare my fit</button>}
       </div></div>}
 
