@@ -281,14 +281,14 @@ export default function LandingPage({ enterAtelier, openSizing, currency, setCur
         </div>
       </section>
 
-      {/* Featured Designer Section */}
+      {/* Featured Collection Section */}
       <section className="landing-partner-section">
         <div className="partner-card-glow">
           <div className="partner-info">
-            <span className="eyebrow">FEATURED DESIGNER</span>
-            <h2>Abraham's Collection</h2>
+            <span className="eyebrow">CURATED ATELIER DROP</span>
+            <h2>Regal Rose Agbada</h2>
             <p>
-              Hand-crafted tailoring meets next-generation 3D spatial technology. Explore signature Agbada, Kaftan, and suit collections available on Loom.
+              Hand-crafted tailoring meets next-generation 3D spatial technology. Explore signature Agbada, Kaftan, and bespoke collections on Loom.
             </p>
             <button className="ghost-button" type="button" onClick={enterAtelier}>
               Explore Collection
@@ -296,9 +296,9 @@ export default function LandingPage({ enterAtelier, openSizing, currency, setCur
           </div>
           <div className="partner-visual">
             <div className="garment-card-preview">
-              <span className="brand-tag">Featured Collection</span>
-              <strong className="garment-name">Tailored Ivory Set</strong>
-              <small className="garment-price">$840 • ₦1,260,000</small>
+              <span className="brand-tag">3D Atelier Drop</span>
+              <strong className="garment-name">Regal Rose Agbada</strong>
+              <small className="garment-price">$1,180 • ₦1,770,000</small>
             </div>
           </div>
         </div>

@@ -13,10 +13,7 @@
 - **Rotate & inspect** 3D garments in a museum-style gallery
 - **Get AI-powered sizing** — enter measurements to scale a 3D mannequin
 - **Generate bespoke concepts** — describe your dream garment via text/image prompts (Tripo AI)
-- **Checkout securely** — Payaza integration with Bespoke Escrow for international trust
-- **Dynamic currency** — seamless USD/NGN switching
-
-### Flagship Brand: Abraham's Collection
+- **Checkout securely** — Multi-currency checkout (USD / NGN) powered by Flutterwave
 
 ---
 
