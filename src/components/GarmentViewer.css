@@ -5,10 +5,10 @@
 .modal-card { max-height: calc(100dvh - 32px); overflow-y: auto; }
 .viewer-tools { position: absolute; inset: 12px 12px auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; }
 .viewer-tools button, .garment-detail button { color: #fffaef; background: #35272d; border: 1px solid #756269; border-radius: 12px; padding: 8px; cursor: pointer; }
-.viewer-hint { position: absolute; bottom: 8px; width: 100%; text-align: center; pointer-events: none; font-size: 12px; color: #e8dfca; }
+.viewer-hint { position: absolute; bottom: 26px; left: 12px; right: 12px; text-align: center; pointer-events: none; font-size: 11px; color: rgba(232, 223, 202, 0.7); }
 .garment-hotspot { width: 26px; height: 26px; border-radius: 50%; color: #fffaef; background: #800020; border: 1px solid #c9a96e; cursor: pointer; }
 .garment-hotspot:focus-visible, .viewer-tools button:focus-visible { outline: 3px solid #c9a96e; outline-offset: 3px; }
-.garment-detail { position: absolute; bottom: 42px; left: 12px; right: 12px; padding: 14px; border-radius: 16px; background: #261b24f5; font-size: 13px; }
+.garment-detail { position: absolute; bottom: 42px; left: 12px; right: 12px; padding: 14px; border-radius: 16px; background: #261b24f5; font-size: 13px; z-index: 12; }
 .garment-detail button { float: right; }
 .viewer-fallback { padding: 60px 24px; }
 .measurement-error { color: #ffc5c5; font-size: 13px; }
@@ -21,10 +21,10 @@
 .order-actions { position: relative; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
 .checkout-drawer { max-height: calc(100dvh - 52px); overflow-y: auto; }
 .modal-card > h2 { padding-right: 32px; }
-.viewer-modes { position: absolute; top: 48px; left: 12px; right: 12px; display: flex; gap: 4px; }
-.viewer-modes button { border: 1px solid #756269; padding: 7px 10px; border-radius: 20px; font-size: 11px; background: #241f23; color: #fffaef; cursor: pointer; }
-.viewer-modes button[aria-pressed="true"] { background: #800020; }
-.studio-caption { position: absolute; bottom: 32px; left: 12px; right: 12px; font-size: 10px; text-align: center; color: #dbd1c1; pointer-events: none; }
+.viewer-modes { position: absolute; top: 48px; left: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 8; }
+.viewer-modes button { border: 1px solid #756269; padding: 6px 12px; border-radius: 20px; font-size: 11px; background: #241f23; color: #fffaef; cursor: pointer; }
+.viewer-modes button[aria-pressed="true"] { background: #800020; border-color: #c9a96e; }
+.studio-caption { position: absolute; bottom: 8px; left: 12px; right: 12px; font-size: 10px; text-align: center; color: rgba(219, 209, 193, 0.65); pointer-events: none; }
 .showroom-panel > .floating-card { display: none; }
 .fabric-option { display: flex; flex-direction: row; align-items: center; gap: 10px; font-size: 13px; }
 .fabric-option input { width: 18px; height: 18px; }
@@ -118,8 +118,21 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .trace-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .generation-panel select { padding: 8px; border-radius: 8px; color: #eee; background: #262126; }
 .viewer-modes { flex-wrap: wrap; max-width: calc(100% - 24px); }
-.model-import { position: absolute; top: 94px; left: 12px; z-index: 3; max-width: calc(100% - 24px); padding: 8px; border-radius: 12px; background: #231b22f5; font-size: 11px; }
-.model-import summary { cursor: pointer; }
+.model-import {
+  position: absolute;
+  top: 86px;
+  right: 12px;
+  left: auto;
+  z-index: 10;
+  max-width: min(260px, calc(100% - 24px));
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(35, 27, 34, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(117, 98, 105, 0.6);
+  font-size: 11px;
+}
+.model-import summary { cursor: pointer; color: #eed5aa; font-weight: 500; }
 .model-import label, .model-import small, .model-import span { display: block; margin-top: 8px; overflow-wrap: anywhere; }
 .model-import input { display: block; max-width: 100%; margin-top: 6px; font-size: 11px; }
 .model-import button { color: #fffaef; background: #35272d; border: 1px solid #756269; border-radius: 8px; padding: 6px; }
