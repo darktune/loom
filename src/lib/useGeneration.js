@@ -4,7 +4,9 @@ import { inspectGlb } from './modelAsset';
 import { validateFallbackFile } from './browserFallback';
 const ACTIVE = ['uploading', 'queued', 'running'];
 async function api(path, options) {
-  const response = await fetch(path, { ...options, signal: AbortSignal.timeout(20000) });
+  const baseUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+  const url = path.startsWith('http') ? path : `${baseUrl}${path}`;
+  const response = await fetch(url, { ...options, signal: AbortSignal.timeout(20000) });
   const data = await response.json();
   if (!response.ok) {
     const error = new Error(data.error || 'Generation request failed.');
