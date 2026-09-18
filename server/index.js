@@ -111,7 +111,8 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
             },
             customizations: {
               title: 'Loom Atelier',
-              description: 'Custom Bespoke Garment Order',
+              description: 'Custom Bespoke Garment & Tailoring Order',
+              logo: 'https://loom-atelier.vercel.app/favicon.ico',
             }
           })
         });

@@ -72,8 +72,8 @@ export async function payWithFlutterwave({
           name: cleanName,
         },
         customizations: {
-          title: 'Loom 3D Atelier',
-          description: 'Custom Bespoke Garment Order',
+          title: 'Loom Atelier',
+          description: 'Custom Bespoke Garment & Tailoring Order',
           logo: 'https://loom-atelier.vercel.app/favicon.ico',
         },
         callback: (response) => {
