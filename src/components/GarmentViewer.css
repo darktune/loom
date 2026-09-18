@@ -21,10 +21,19 @@
 .order-actions { position: relative; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
 .checkout-drawer { max-height: calc(100dvh - 52px); overflow-y: auto; }
 .modal-card > h2 { padding-right: 32px; }
-.viewer-modes { position: absolute; top: 48px; left: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 8; }
-.viewer-modes button { border: 1px solid #756269; padding: 6px 12px; border-radius: 20px; font-size: 11px; background: #241f23; color: #fffaef; cursor: pointer; }
+.viewer-modes { position: absolute; top: 48px; left: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 12; }
+.viewer-modes button, .model-import summary { border: 1px solid #756269; padding: 6px 12px; border-radius: 20px; font-size: 11px; background: #241f23; color: #fffaef; cursor: pointer; list-style: none; user-select: none; }
 .viewer-modes button[aria-pressed="true"] { background: #800020; border-color: #c9a96e; }
-.studio-caption { position: absolute; bottom: 8px; left: 12px; right: 12px; font-size: 10px; text-align: center; color: rgba(219, 209, 193, 0.65); pointer-events: none; }
+.model-import { position: relative; display: inline-block; }
+.model-import summary::-webkit-details-marker { display: none; }
+.import-popover { position: absolute; top: calc(100% + 6px); left: 0; min-width: 240px; max-width: calc(100vw - 40px); padding: 12px; border-radius: 14px; background: rgba(30, 24, 29, 0.96); backdrop-filter: blur(12px); border: 1px solid rgba(117, 98, 105, 0.6); z-index: 25; font-size: 11px; box-shadow: 0 12px 32px rgba(0,0,0,0.6); }
+.import-popover label, .import-popover small, .import-popover span { display: block; margin-top: 6px; overflow-wrap: anywhere; }
+.import-popover input { display: block; max-width: 100%; margin-top: 6px; font-size: 11px; }
+.import-popover button { color: #fffaef; background: #35272d; border: 1px solid #756269; border-radius: 8px; padding: 6px 10px; margin-top: 6px; }
+
+.viewer-bottom-bar { position: absolute; bottom: 8px; left: 12px; right: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; pointer-events: none; z-index: 5; text-align: center; }
+.viewer-bottom-bar .hint-text { font-size: 11px; color: rgba(232, 223, 202, 0.85); font-weight: 500; }
+.viewer-bottom-bar .caption-text { font-size: 10px; color: rgba(219, 209, 193, 0.6); }
 .showroom-panel > .floating-card { display: none; }
 .fabric-option { display: flex; flex-direction: row; align-items: center; gap: 10px; font-size: 13px; }
 .fabric-option input { width: 18px; height: 18px; }
@@ -117,25 +126,6 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .trace-image svg:focus-visible .trace-cursor { display: block; }
 .trace-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .generation-panel select { padding: 8px; border-radius: 8px; color: #eee; background: #262126; }
-.viewer-modes { flex-wrap: wrap; max-width: calc(100% - 24px); }
-.model-import {
-  position: absolute;
-  top: 86px;
-  right: 12px;
-  left: auto;
-  z-index: 10;
-  max-width: min(260px, calc(100% - 24px));
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: rgba(35, 27, 34, 0.94);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(117, 98, 105, 0.6);
-  font-size: 11px;
-}
-.model-import summary { cursor: pointer; color: #eed5aa; font-weight: 500; }
-.model-import label, .model-import small, .model-import span { display: block; margin-top: 8px; overflow-wrap: anywhere; }
-.model-import input { display: block; max-width: 100%; margin-top: 6px; font-size: 11px; }
-.model-import button { color: #fffaef; background: #35272d; border: 1px solid #756269; border-radius: 8px; padding: 6px; }
 .meshy-fallback { margin-top: 24px; padding: 18px; border: 1px solid #756269; border-radius: 14px; }
 .meshy-fallback summary { cursor: pointer; font-weight: 600; }
 .meshy-fallback input { display: block; max-width: 100%; margin-top: 10px; }

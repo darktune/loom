@@ -128,12 +128,30 @@ export default function GarmentViewer({ garment, measurements, compact = false, 
       <span>{view === 'construction' ? 'Construction study' : view === 'generated' ? `${activeModel?.provider || (activeModel?.imported || localModel ? 'Imported' : 'Tripo')} model` : view === 'studio' ? 'Studio dress form' : 'Garment sketch'}</span>
       <button type="button" onClick={() => controls.current?.reset()}>Reset view</button>
     </div>
-    <div className="viewer-modes"><button aria-pressed={view === 'construction'} onClick={() => { setView('construction'); setDetail(null); }}>Construction</button><button aria-pressed={view === 'studio'} onClick={() => { setView('studio'); setDetail(null); }}>Studio mannequin</button><button aria-pressed={view === 'sketch'} onClick={() => { setView('sketch'); setDetail(null); }}>Garment sketch</button>{activeModel && <button aria-pressed={view === 'generated'} onClick={() => { setView('generated'); setDetail(null); }}>Generated garment</button>}</div>
-    <details className="model-import"><summary>Import GLB</summary><label>Import exported GLB<input type="file" accept=".glb" onChange={importModel} disabled={importing} /></label><small>Local preview only. File stays in this browser session.</small>{importing && <span role="status">Reading model…</span>}{importError && <p role="alert">{importError}</p>}{localModel && <span>{localModel.name} <button type="button" onClick={() => { setLocalModel(null); setView(generated ? 'generated' : 'construction'); }}>Remove import</button></span>}</details>
+    <div className="viewer-modes">
+      <button aria-pressed={view === 'construction'} onClick={() => { setView('construction'); setDetail(null); }}>Construction</button>
+      <button aria-pressed={view === 'studio'} onClick={() => { setView('studio'); setDetail(null); }}>Studio mannequin</button>
+      <button aria-pressed={view === 'sketch'} onClick={() => { setView('sketch'); setDetail(null); }}>Garment sketch</button>
+      {activeModel && <button aria-pressed={view === 'generated'} onClick={() => { setView('generated'); setDetail(null); }}>Generated garment</button>}
+      <details className="model-import">
+        <summary>Import GLB</summary>
+        <div className="import-popover">
+          <label>Import exported GLB<input type="file" accept=".glb" onChange={importModel} disabled={importing} /></label>
+          <small>Local preview only. File stays in this session.</small>
+          {importing && <span role="status">Reading model…</span>}
+          {importError && <p role="alert">{importError}</p>}
+          {localModel && <span>{localModel.name} <button type="button" onClick={() => { setLocalModel(null); setView(generated ? 'generated' : 'construction'); }}>Remove import</button></span>}
+        </div>
+      </details>
+    </div>
+
     {view === 'generated' && <div className="fit-controls"><label>Rotation: {fit.rotation}°<input type="range" min="-180" max="180" value={fit.rotation} onChange={(event) => setFit({ rotation: Number(event.target.value) })} /></label>{activeModel?.modelUrl?.startsWith('blob:') && <a href={activeModel.modelUrl} download={activeModel.name || 'loom-model.glb'}>Download GLB</a>}<small>Original model proportions preserved. Measurements are not applied to this preview.</small></div>}
-    {view === 'construction' && <p className='studio-caption'>Measurement-driven shell · no cloth simulation</p>}
-    {view === 'studio' && <p className="studio-caption">{fabricUrl ? 'Your image as fabric · not outfit reconstruction' : 'Sample dress form · not the selected garment'}</p>}
-    {!compact && <p className="viewer-hint">Drag to rotate · Scroll or pinch to zoom</p>}
+    
+    <div className="viewer-bottom-bar">
+      {!compact && <span className="hint-text">Drag to rotate · Scroll or pinch to zoom</span>}
+      {view === 'construction' && <span className="caption-text">Measurement-driven shell · no cloth simulation</span>}
+      {view === 'studio' && <span className="caption-text">{fabricUrl ? 'Your image as fabric · not outfit reconstruction' : 'Sample dress form · not the selected garment'}</span>}
+    </div>
     {detail && <div className="garment-detail" role="status">
       <button type="button" onClick={() => setDetail(null)} aria-label="Close garment detail">×</button>
       <strong>{detail}</strong>
