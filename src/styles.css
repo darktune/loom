@@ -1393,6 +1393,7 @@ textarea {
 }
 
 /* Responsive adjustments */
+/* Responsive adjustments */
 @media (max-width: 900px) {
   .preview-card-body {
     grid-template-columns: 1fr;
@@ -1401,15 +1402,166 @@ textarea {
   .pipeline-steps-grid {
     grid-template-columns: 1fr;
   }
-  .bento-card.card-large {
+  .bento-card.card-large,
+  .bento-card.card-medium {
     grid-column: span 1;
   }
   .partner-card-glow {
     grid-template-columns: 1fr;
-    padding: 28px;
+    padding: 24px 18px;
   }
   .footer-content {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .landing-hero {
+    padding: 24px 14px 16px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .landing-hero h1 {
+    font-size: clamp(1.9rem, 7.5vw, 2.8rem);
+    line-height: 1.15;
+    word-wrap: break-word;
+  }
+
+  .landing-hero p {
+    font-size: 0.92rem;
+  }
+
+  .landing-stats {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 14px;
+    padding: 12px 14px;
+    border-radius: 20px;
+    margin-top: 28px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-card {
+    min-width: 90px;
+  }
+
+  .stat-number {
+    font-size: 1.15rem;
+  }
+
+  .stat-desc {
+    font-size: 0.7rem;
+  }
+
+  .landing-showcase-section {
+    padding: 18px 12px;
+    border-radius: 20px;
+  }
+
+  .feature-tabs-bar {
+    gap: 6px;
+  }
+
+  .feature-tab-pill {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .feature-preview-card {
+    padding: 16px 12px;
+    border-radius: 16px;
+  }
+
+  .preview-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .preview-viewport-box {
+    min-height: 200px;
+    padding: 14px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .viewport-overlay-tag {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 10px;
+    align-self: center;
+  }
+
+  .graphic-sphere {
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 10px;
+  }
+
+  .graphic-label {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .graphic-sub {
+    font-size: 0.75rem;
+  }
+
+  .bento-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  .bento-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .bento-card p {
+    font-size: 0.88rem;
+  }
+
+  .bento-visual {
+    min-height: 100px;
+    padding: 10px;
+  }
+
+  .visual-sizing .sizing-ruler-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+
+  .checkout-drawer {
+    width: calc(100vw - 16px);
+    right: 8px;
+    top: 8px;
+    bottom: 8px;
+    max-height: calc(100dvh - 16px);
+    border-radius: 20px;
+    padding: 16px 14px;
+  }
+
+  .landing-topbar {
+    padding: 10px 14px;
+  }
+
+  .landing-nav-links {
+    gap: 8px;
+    font-size: 0.78rem;
+  }
+
+  .landing-cta {
+    width: 100%;
+    padding: 14px 20px;
   }
 }
 /* Flutterwave Gateway & Checkout Drawer Styles */
