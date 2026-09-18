@@ -62,74 +62,70 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
       }
       return send(res, 200, job, origin);
     }
-    if (req.method === 'GET' && path === '/api/payaza/config') {
-      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
-      const payazaPublic = process.env.PAYAZA_PUBLIC_KEY || process.env.VITE_PAYAZA_PUBLIC_KEY || '';
+    if (req.method === 'GET' && path === '/api/flutterwave/config') {
+      const secretKey = process.env.FLUTTERWAVE_SECRET_KEY || '';
+      const publicKey = process.env.FLUTTERWAVE_PUBLIC_KEY || process.env.VITE_FLUTTERWAVE_PUBLIC_KEY || '';
       return send(res, 200, {
-        configured: Boolean(payazaSecret || payazaPublic),
-        hasSecretKey: Boolean(payazaSecret),
-        publicKey: payazaPublic,
-        mode: process.env.PAYAZA_ENV || 'Live'
+        configured: Boolean(secretKey || publicKey),
+        hasSecretKey: Boolean(secretKey),
+        publicKey: publicKey,
       }, origin);
     }
 
-    if (req.method === 'POST' && path === '/api/payaza/initialize') {
-      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
+    if (req.method === 'POST' && path === '/api/flutterwave/initialize') {
+      const secretKey = process.env.FLUTTERWAVE_SECRET_KEY || '';
       if (!req.headers['content-type']?.startsWith('application/json')) return send(res, 415, { error: 'Expected JSON.' }, origin);
 
       try {
         const chunks = []; let size = 0;
         for await (const chunk of req) { size += chunk.length; if (size > 1024 * 1024) { send(res, 413, { error: 'Request body too large.' }, origin); return; } chunks.push(chunk); }
-        const { amount, currency = 'NGN', email, firstName = 'Loom', lastName = 'Customer', reference } = JSON.parse(Buffer.concat(chunks).toString());
+        const { amount, currency = 'USD', email, name = 'Loom Customer', reference } = JSON.parse(Buffer.concat(chunks).toString());
 
         if (!amount || !email) return send(res, 400, { error: 'Amount and email are required.' }, origin);
 
-        const txRef = reference || `LOOM-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+        const txRef = reference || `LOOM-FLW-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
-        if (!payazaSecret) {
-          // Soft demo fallback response when secret key is not yet set
+        if (!secretKey) {
           return send(res, 200, {
             status: 'success',
             demo: true,
             reference: txRef,
-            message: 'Payaza endpoint reached. Add PAYAZA_SECRET_KEY to Render to process live transactions.',
+            message: 'Flutterwave endpoint reached. Add FLUTTERWAVE_SECRET_KEY to Render to process live transactions.',
           }, origin);
         }
 
-        const payazaBase = process.env.PAYAZA_BASE_URL || 'https://router-live.payaza.africa/api/v1';
-        const payazaRes = await fetch(`${payazaBase}/checkout/initialize`, {
+        const flwRes = await fetch('https://api.flutterwave.com/v3/payments', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Payaza ${payazaSecret.trim()}`,
+            'Authorization': `Bearer ${secretKey.trim()}`,
           },
           body: JSON.stringify({
-            service_type: 'Account',
-            service_payload: {
-              request_application: 'PAYAZA',
-              application_mode: process.env.PAYAZA_ENV || 'Live',
-              transaction_reference: txRef,
-              amount: Number(amount),
-              currency: currency.toUpperCase(),
-              payment_options: 'Card, Bank Transfer, USSD',
-              callback_url: process.env.ALLOWED_ORIGIN || 'https://loom-atelier.vercel.app',
-              email_address: email,
-              first_name: firstName,
-              last_name: lastName,
+            tx_ref: txRef,
+            amount: Number(amount),
+            currency: currency.toUpperCase(),
+            redirect_url: process.env.ALLOWED_ORIGIN || 'https://loom-atelier.vercel.app',
+            customer: {
+              email: email,
+              name: name,
+            },
+            customizations: {
+              title: 'Loom Atelier',
+              description: 'Custom Bespoke Garment Order',
             }
           })
         });
 
-        const payazaData = await payazaRes.json();
-        if (!payazaRes.ok) {
-          return send(res, payazaRes.status, { error: payazaData.message || payazaData.error || 'Payaza checkout initialization failed.' }, origin);
+        const flwData = await flwRes.json();
+        if (!flwRes.ok) {
+          return send(res, flwRes.status, { error: flwData.message || flwData.error || 'Flutterwave checkout initialization failed.' }, origin);
         }
 
         return send(res, 200, {
           status: 'success',
           reference: txRef,
-          checkoutUrl: payazaData.checkout_url || payazaData.authorization_url || payazaData.data?.checkout_url || null,
-          data: payazaData,
+          checkoutUrl: flwData.data?.link || flwData.link || null,
+          data: flwData,
         }, origin);
 
       } catch (error) {
@@ -137,21 +133,23 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
       }
     }
 
-    if (req.method === 'POST' && path === '/api/payaza/verify') {
-      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
+    if (req.method === 'POST' && path === '/api/flutterwave/verify') {
+      const secretKey = process.env.FLUTTERWAVE_SECRET_KEY || '';
       try {
         const chunks = [];
         for await (const chunk of req) chunks.push(chunk);
-        const { reference } = JSON.parse(Buffer.concat(chunks).toString() || '{}');
-        if (!reference) return send(res, 400, { error: 'Transaction reference is required.' }, origin);
+        const { transactionId, reference } = JSON.parse(Buffer.concat(chunks).toString() || '{}');
 
-        if (!payazaSecret) {
+        if (!secretKey) {
           return send(res, 200, { status: 'verified', demo: true, reference }, origin);
         }
 
-        const payazaBase = process.env.PAYAZA_BASE_URL || 'https://router-live.payaza.africa/api/v1';
-        const verifyRes = await fetch(`${payazaBase}/checkout/transaction/verify/${encodeURIComponent(reference)}`, {
-          headers: { 'Authorization': `Payaza ${payazaSecret.trim()}` }
+        const verifyUrl = transactionId
+          ? `https://api.flutterwave.com/v3/transactions/${encodeURIComponent(transactionId)}/verify`
+          : `https://api.flutterwave.com/v3/transactions/verify-by-reference?tx_ref=${encodeURIComponent(reference)}`;
+
+        const verifyRes = await fetch(verifyUrl, {
+          headers: { 'Authorization': `Bearer ${secretKey.trim()}` }
         });
         const verifyData = await verifyRes.json();
         return send(res, 200, verifyData, origin);

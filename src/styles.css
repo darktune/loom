@@ -1407,34 +1407,13 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
-/* Payaza Gateway & Checkout Drawer Styles */
-.payment-gateway-badge {
-  margin: 16px 0 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.payment-gateway-badge span {
-  color: #f5d99e;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.payment-gateway-badge small {
-  color: rgba(245, 241, 234, 0.7);
-  font-size: 0.78rem;
-}
-
+/* Flutterwave Gateway & Checkout Drawer Styles */
 .checkout-fields {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 16px;
+  margin-top: 14px;
 }
 
 .checkout-fields .field-group {
@@ -1459,19 +1438,19 @@ textarea {
 }
 
 .checkout-fields input:focus {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(255, 157, 0, 0.6);
   background: rgba(255, 255, 255, 0.08);
 }
 
-.payaza-pay-btn {
+.flutterwave-pay-btn {
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #d4af37, #b8860b);
+  background: linear-gradient(135deg, #fb923c, #f97316);
   color: #0d0d0d;
   font-weight: 700;
 }
 
-.payaza-pay-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e5c158, #c9971c);
+.flutterwave-pay-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fdba74, #fb923c);
   transform: translateY(-1px);
 }
 
@@ -1479,7 +1458,7 @@ textarea {
   padding: 20px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(251, 146, 60, 0.3);
   display: flex;
   flex-direction: column;
   gap: 12px;

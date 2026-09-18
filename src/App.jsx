@@ -7,7 +7,7 @@ import { useGeneration } from './lib/useGeneration';
 import GarmentViewer from './components/GarmentViewer';
 import { validateMeasurements } from './lib/sizing';
 import LandingPage from './components/landing/LandingPage';
-import { payWithPayaza } from './lib/payaza';
+import { payWithFlutterwave } from './lib/flutterwave';
 
 const currencies = {
   USD: { label: 'USD', symbol: '$', rate: 1 },
@@ -70,7 +70,7 @@ export default function App() {
   const showroom = useRef();
   const dialog = useRef();
 
-  const handlePayazaCheckout = async () => {
+  const handleFlutterwaveCheckout = async () => {
     if (!customerEmail || !customerEmail.includes('@')) {
       setPaymentError('Please enter a valid email address for order receipt.');
       return;
@@ -80,7 +80,7 @@ export default function App() {
 
     try {
       const rawPrice = currency === 'NGN' ? selectedGarment.price * currencies.NGN.rate : selectedGarment.price;
-      await payWithPayaza({
+      await payWithFlutterwave({
         amount: rawPrice,
         currency: currency,
         email: customerEmail,
@@ -100,7 +100,7 @@ export default function App() {
       });
     } catch (err) {
       setPaymentProcessing(false);
-      setPaymentError(err.message || 'Could not connect to Payaza gateway.');
+      setPaymentError(err.message || 'Could not connect to Flutterwave gateway.');
     }
   };
 
@@ -427,7 +427,7 @@ export default function App() {
 
           {paymentReceipt ? (
             <div className="payment-receipt-box">
-              <div className="receipt-badge">Payaza Payment Confirmed</div>
+              <div className="receipt-badge">Flutterwave Payment Confirmed</div>
               <h4>Thank you for your order!</h4>
               <p>Reference: <code>{paymentReceipt.reference}</code></p>
               <p>Amount Paid: <strong>{formatPrice(selectedGarment.price, currency)} ({currency})</strong></p>
@@ -449,11 +449,6 @@ export default function App() {
                   <small>Made for your profile</small>
                 </div>
                 <span>{quotedPrice}</span>
-              </div>
-
-              <div className="payment-gateway-badge">
-                <span>Payaza Gateway Enabled</span>
-                <small>Cards · Bank Transfer · USSD (USD & NGN)</small>
               </div>
 
               <div className="checkout-fields">
@@ -487,11 +482,11 @@ export default function App() {
 
               <button
                 type="button"
-                className="primary-button wide payaza-pay-btn"
+                className="primary-button wide flutterwave-pay-btn"
                 disabled={paymentProcessing}
-                onClick={handlePayazaCheckout}
+                onClick={handleFlutterwaveCheckout}
               >
-                {paymentProcessing ? 'Connecting to Payaza...' : `Pay ${quotedPrice} with Payaza`}
+                {paymentProcessing ? 'Connecting to Flutterwave...' : `Pay ${quotedPrice} with Flutterwave`}
               </button>
 
               <button type="button" className="secondary-button wide" onClick={downloadBrief}>
