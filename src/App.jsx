@@ -15,9 +15,28 @@ const currencies = {
 };
 
 const garmentDetails = [
-  { title: 'Tailored Ivory Set', price: 840, badge: 'Signature drop', color: 'Ivory' },
-  { title: 'Sculpted Agbada', price: 1180, badge: 'Bespoke fit', color: 'Ash' },
-  { title: 'Evening Kaftan', price: 960, badge: 'New arrival', color: 'Cinder' },
+  {
+    title: 'Regal Rose Agbada',
+    price: 1180,
+    badge: '3D Atelier Sample',
+    color: '#8b263e',
+    image: '/items/garment-1.jpg',
+    modelUrl: '/models/regal-rose-agbada.glb',
+  },
+  {
+    title: 'Tailored Ivory Set',
+    price: 840,
+    badge: 'Signature drop',
+    color: '#f5f1ea',
+    image: '/items/garment-2.jpg',
+  },
+  {
+    title: 'Evening Kaftan',
+    price: 960,
+    badge: 'New arrival',
+    color: '#2c2a2a',
+    image: '/items/garment-3.jpg',
+  },
 ];
 
 const initialMeasurements = {
@@ -298,7 +317,11 @@ export default function App() {
                 className={`gallery-item ${selectedGarment.title === garment.title ? 'selected' : ''}`}
                 onClick={() => setSelectedGarment(garment)}
               >
-                <span className="swatch" style={{ background: garment.color === 'Ivory' ? '#f5f1ea' : garment.color === 'Ash' ? '#d7d3cf' : '#2c2a2a' }} />
+                {garment.image ? (
+                  <img src={garment.image} alt={garment.title} className="garment-thumb-img" />
+                ) : (
+                  <span className="swatch" style={{ background: garment.color }} />
+                )}
                 <div>
                   <strong>{garment.title}</strong>
                   <small>{garment.badge}</small>
@@ -443,7 +466,11 @@ export default function App() {
           ) : (
             <>
               <div className="checkout-summary">
-                <div className="summary-art" />
+                {selectedGarment.image ? (
+                  <img src={selectedGarment.image} alt={selectedGarment.title} className="summary-art-img" />
+                ) : (
+                  <div className="summary-art" />
+                )}
                 <div>
                   <strong>{selectedGarment.title}</strong>
                   <small>Made for your profile</small>

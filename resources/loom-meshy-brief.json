@@ -1,0 +1,33 @@
+{
+  "provider": "Meshy",
+  "mode": "supervised-browser",
+  "fitApplied": false,
+  "measurements": {
+    "height": "176",
+    "weight": "68",
+    "chest": "94",
+    "waist": "78",
+    "hip": "96"
+  },
+  "units": "cm",
+  "prompt": "Fitted agbada with a softened shoulder and sculpted drape.",
+  "references": [
+    {
+      "name": "photo_2026-08-17_01-49-19.jpg",
+      "role": "front"
+    },
+    {
+      "name": "photo_2026-08-17_01-49-26.jpg",
+      "role": "back"
+    },
+    {
+      "name": "photo_2026-08-17_01-49-49.jpg",
+      "role": "left"
+    },
+    {
+      "name": "photo_2026-08-17_01-49-56.jpg",
+      "role": "right"
+    }
+  ],
+  "note": "Measurements are design context only. Browser generation and export happen in Meshy; import the downloaded GLB into LOOM. No generation is implied by this brief."
+}
