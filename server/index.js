@@ -158,6 +158,10 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
       }
     }
 
+    if (req.method === 'POST' && path === '/api/flutterwave/webhook') {
+      return send(res, 200, { status: 'success', message: 'Webhook received' }, origin);
+    }
+
     send(res, 404, { error: 'Not found.' }, origin);
   });
 }
