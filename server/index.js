@@ -62,6 +62,104 @@ export function createGenerationServer({ key = '', client = createTripoClient(ke
       }
       return send(res, 200, job, origin);
     }
+    if (req.method === 'GET' && path === '/api/payaza/config') {
+      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
+      const payazaPublic = process.env.PAYAZA_PUBLIC_KEY || process.env.VITE_PAYAZA_PUBLIC_KEY || '';
+      return send(res, 200, {
+        configured: Boolean(payazaSecret || payazaPublic),
+        hasSecretKey: Boolean(payazaSecret),
+        publicKey: payazaPublic,
+        mode: process.env.PAYAZA_ENV || 'Live'
+      }, origin);
+    }
+
+    if (req.method === 'POST' && path === '/api/payaza/initialize') {
+      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
+      if (!req.headers['content-type']?.startsWith('application/json')) return send(res, 415, { error: 'Expected JSON.' }, origin);
+
+      try {
+        const chunks = []; let size = 0;
+        for await (const chunk of req) { size += chunk.length; if (size > 1024 * 1024) { send(res, 413, { error: 'Request body too large.' }, origin); return; } chunks.push(chunk); }
+        const { amount, currency = 'NGN', email, firstName = 'Loom', lastName = 'Customer', reference } = JSON.parse(Buffer.concat(chunks).toString());
+
+        if (!amount || !email) return send(res, 400, { error: 'Amount and email are required.' }, origin);
+
+        const txRef = reference || `LOOM-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
+        if (!payazaSecret) {
+          // Soft demo fallback response when secret key is not yet set
+          return send(res, 200, {
+            status: 'success',
+            demo: true,
+            reference: txRef,
+            message: 'Payaza endpoint reached. Add PAYAZA_SECRET_KEY to Render to process live transactions.',
+          }, origin);
+        }
+
+        const payazaBase = process.env.PAYAZA_BASE_URL || 'https://router-live.payaza.africa/api/v1';
+        const payazaRes = await fetch(`${payazaBase}/checkout/initialize`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Payaza ${payazaSecret.trim()}`,
+          },
+          body: JSON.stringify({
+            service_type: 'Account',
+            service_payload: {
+              request_application: 'PAYAZA',
+              application_mode: process.env.PAYAZA_ENV || 'Live',
+              transaction_reference: txRef,
+              amount: Number(amount),
+              currency: currency.toUpperCase(),
+              payment_options: 'Card, Bank Transfer, USSD',
+              callback_url: process.env.ALLOWED_ORIGIN || 'https://loom-atelier.vercel.app',
+              email_address: email,
+              first_name: firstName,
+              last_name: lastName,
+            }
+          })
+        });
+
+        const payazaData = await payazaRes.json();
+        if (!payazaRes.ok) {
+          return send(res, payazaRes.status, { error: payazaData.message || payazaData.error || 'Payaza checkout initialization failed.' }, origin);
+        }
+
+        return send(res, 200, {
+          status: 'success',
+          reference: txRef,
+          checkoutUrl: payazaData.checkout_url || payazaData.authorization_url || payazaData.data?.checkout_url || null,
+          data: payazaData,
+        }, origin);
+
+      } catch (error) {
+        return send(res, 500, { error: error.message }, origin);
+      }
+    }
+
+    if (req.method === 'POST' && path === '/api/payaza/verify') {
+      const payazaSecret = process.env.PAYAZA_SECRET_KEY || '';
+      try {
+        const chunks = [];
+        for await (const chunk of req) chunks.push(chunk);
+        const { reference } = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+        if (!reference) return send(res, 400, { error: 'Transaction reference is required.' }, origin);
+
+        if (!payazaSecret) {
+          return send(res, 200, { status: 'verified', demo: true, reference }, origin);
+        }
+
+        const payazaBase = process.env.PAYAZA_BASE_URL || 'https://router-live.payaza.africa/api/v1';
+        const verifyRes = await fetch(`${payazaBase}/checkout/transaction/verify/${encodeURIComponent(reference)}`, {
+          headers: { 'Authorization': `Payaza ${payazaSecret.trim()}` }
+        });
+        const verifyData = await verifyRes.json();
+        return send(res, 200, verifyData, origin);
+      } catch (error) {
+        return send(res, 500, { error: error.message }, origin);
+      }
+    }
+
     send(res, 404, { error: 'Not found.' }, origin);
   });
 }

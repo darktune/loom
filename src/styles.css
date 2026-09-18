@@ -1407,4 +1407,109 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+/* Payaza Gateway & Checkout Drawer Styles */
+.payment-gateway-badge {
+  margin: 16px 0 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
+.payment-gateway-badge span {
+  color: #f5d99e;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.payment-gateway-badge small {
+  color: rgba(245, 241, 234, 0.7);
+  font-size: 0.78rem;
+}
+
+.checkout-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.checkout-fields .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkout-fields .field-group span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.checkout-fields input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.checkout-fields input:focus {
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.payaza-pay-btn {
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #0d0d0d;
+  font-weight: 700;
+}
+
+.payaza-pay-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e5c158, #c9971c);
+  transform: translateY(-1px);
+}
+
+.payment-receipt-box {
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.receipt-badge {
+  align-self: start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(46, 125, 50, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #81c784;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.payment-receipt-box code {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #f5d99e;
+}
+
+.error-banner {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(211, 47, 47, 0.15);
+  border: 1px solid rgba(239, 83, 80, 0.3);
+  color: #ef9a9a;
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+}

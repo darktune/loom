@@ -7,6 +7,7 @@ import { useGeneration } from './lib/useGeneration';
 import GarmentViewer from './components/GarmentViewer';
 import { validateMeasurements } from './lib/sizing';
 import LandingPage from './components/landing/LandingPage';
+import { payWithPayaza } from './lib/payaza';
 
 const currencies = {
   USD: { label: 'USD', symbol: '$', rate: 1 },
@@ -61,8 +62,47 @@ export default function App() {
   const [info, setInfo] = useState(null);
   const [orderSaved, setOrderSaved] = useState(false);
   const [exportedBrief, setExportedBrief] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [paymentReceipt, setPaymentReceipt] = useState(null);
+  const [paymentError, setPaymentError] = useState(null);
   const showroom = useRef();
   const dialog = useRef();
+
+  const handlePayazaCheckout = async () => {
+    if (!customerEmail || !customerEmail.includes('@')) {
+      setPaymentError('Please enter a valid email address for order receipt.');
+      return;
+    }
+    setPaymentError(null);
+    setPaymentProcessing(true);
+
+    try {
+      const rawPrice = currency === 'NGN' ? selectedGarment.price * currencies.NGN.rate : selectedGarment.price;
+      await payWithPayaza({
+        amount: rawPrice,
+        currency: currency,
+        email: customerEmail,
+        name: customerName || 'Loom Customer',
+        onSuccess: (receipt) => {
+          setPaymentProcessing(false);
+          setPaymentReceipt(receipt);
+          downloadBrief();
+        },
+        onCancel: () => {
+          setPaymentProcessing(false);
+        },
+        onError: (err) => {
+          setPaymentProcessing(false);
+          setPaymentError(err.message || 'Payment failed or was cancelled.');
+        },
+      });
+    } catch (err) {
+      setPaymentProcessing(false);
+      setPaymentError(err.message || 'Could not connect to Payaza gateway.');
+    }
+  };
 
   useEffect(() => {
     const handlePopState = () => {
@@ -377,33 +417,95 @@ export default function App() {
         <aside ref={dialog} className="checkout-drawer" role="dialog" aria-modal="true" aria-label="Order preview">
           <div className="drawer-header">
             <div>
-              <p className="eyebrow">Demo order preview</p>
-              <h3>Review your design</h3>
+              <p className="eyebrow">{paymentReceipt ? 'Order Confirmed' : 'Instant Checkout'}</p>
+              <h3>{paymentReceipt ? 'Payment Receipt' : 'Review your order'}</h3>
             </div>
             <button type="button" className="close-button" onClick={() => setCheckoutOpen(false)} aria-label="Close checkout">
               ×
             </button>
           </div>
 
-          <div className="checkout-summary">
-            <div className="summary-art" />
-            <div>
-              <strong>{selectedGarment.title}</strong>
-              <small>Made for your profile</small>
+          {paymentReceipt ? (
+            <div className="payment-receipt-box">
+              <div className="receipt-badge">Payaza Payment Confirmed</div>
+              <h4>Thank you for your order!</h4>
+              <p>Reference: <code>{paymentReceipt.reference}</code></p>
+              <p>Amount Paid: <strong>{formatPrice(selectedGarment.price, currency)} ({currency})</strong></p>
+              <p>Receipt sent to: <strong>{paymentReceipt.email}</strong></p>
+              
+              <button type="button" className="primary-button wide" onClick={downloadBrief}>
+                Download tailor design brief
+              </button>
+              <button type="button" className="secondary-button wide" onClick={() => setPaymentReceipt(null)}>
+                New order
+              </button>
             </div>
-            <span>{quotedPrice}</span>
-          </div>
+          ) : (
+            <>
+              <div className="checkout-summary">
+                <div className="summary-art" />
+                <div>
+                  <strong>{selectedGarment.title}</strong>
+                  <small>Made for your profile</small>
+                </div>
+                <span>{quotedPrice}</span>
+              </div>
 
-          <div className="info-badge">
-            Payments unavailable · No order will be placed
-          </div>
+              <div className="payment-gateway-badge">
+                <span>Payaza Gateway Enabled</span>
+                <small>Cards · Bank Transfer · USSD (USD & NGN)</small>
+              </div>
 
-          <div className="checkout-form"><p>Height {appliedMeasurements.height} cm · Chest {appliedMeasurements.chest} cm · Waist {appliedMeasurements.waist} cm · Hip {appliedMeasurements.hip} cm</p><p>{prompt}</p><div className="reference-grid">{references.map((item) => <ReferenceCard key={item.id} item={item} />)}</div><p>The downloaded brief includes reference filenames and generation task details. Share the files separately with your tailor.</p></div>
+              <div className="checkout-fields">
+                <label className="field-group">
+                  <span>Customer Email (for receipt)</span>
+                  <input
+                    type="email"
+                    placeholder="name@example.com"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                  />
+                </label>
+                <label className="field-group">
+                  <span>Customer Name</span>
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                  />
+                </label>
+              </div>
 
-          <button type="button" className="primary-button wide" onClick={downloadBrief}>
-            Download design brief
-          </button>
-          {orderSaved && <><p role="status">Download requested. If your browser blocks it, copy the brief below. No order was placed or payment collected.</p><label className="prompt-box">Copyable design brief<textarea readOnly value={exportedBrief} rows={8} onFocus={(event) => event.target.select()} /></label></>}
+              {paymentError && <div className="error-banner">{paymentError}</div>}
+
+              <div className="checkout-form">
+                <p>Height {appliedMeasurements.height} cm · Chest {appliedMeasurements.chest} cm · Waist {appliedMeasurements.waist} cm · Hip {appliedMeasurements.hip} cm</p>
+                <p>{prompt}</p>
+                <div className="reference-grid">{references.map((item) => <ReferenceCard key={item.id} item={item} />)}</div>
+              </div>
+
+              <button
+                type="button"
+                className="primary-button wide payaza-pay-btn"
+                disabled={paymentProcessing}
+                onClick={handlePayazaCheckout}
+              >
+                {paymentProcessing ? 'Connecting to Payaza...' : `Pay ${quotedPrice} with Payaza`}
+              </button>
+
+              <button type="button" className="secondary-button wide" onClick={downloadBrief}>
+                Download brief only
+              </button>
+            </>
+          )}
+
+          {orderSaved && (
+            <>
+              <p role="status" style={{ marginTop: '12px' }}>Download requested. If your browser blocks it, copy the brief below.</p>
+              <label className="prompt-box">Copyable design brief<textarea readOnly value={exportedBrief} rows={6} onFocus={(event) => event.target.select()} /></label>
+            </>
+          )}
         </aside>
       )}
     </div>
