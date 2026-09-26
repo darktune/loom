@@ -8,6 +8,7 @@ import GarmentViewer from './components/GarmentViewer';
 import { validateMeasurements } from './lib/sizing';
 import LandingPage from './components/landing/LandingPage';
 import { payWithFlutterwave } from './lib/flutterwave';
+import BodyScannerModal from './components/BodyScannerModal';
 
 const currencies = {
   USD: { label: 'USD', symbol: '$', rate: 1 },
@@ -65,9 +66,30 @@ export default function App() {
   const [currency, setCurrency] = useState('USD');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [wizardOpen, setWizardOpen] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const [wizardStep, setWizardStep] = useState(0);
   const [measurements, setMeasurements] = useState(initialMeasurements);
   const [appliedMeasurements, setAppliedMeasurements] = useState(initialMeasurements);
+
+  const openScanner = () => {
+    setWizardOpen(false);
+    setCheckoutOpen(false);
+    setInfo(null);
+    setScannerOpen(true);
+  };
+
+  const handleApplyScan = (scannedMetrics) => {
+    const newMeasurements = {
+      height: scannedMetrics.height || measurements.height,
+      weight: scannedMetrics.weight || measurements.weight,
+      chest: scannedMetrics.chest || measurements.chest,
+      waist: scannedMetrics.waist || measurements.waist,
+      hip: scannedMetrics.hip || measurements.hip,
+    };
+    setMeasurements(newMeasurements);
+    setAppliedMeasurements(newMeasurements);
+    setViewMode('atelier');
+  };
   const measurementErrors = validateMeasurements(measurements);
   const [selectedGarment, setSelectedGarment] = useState(garmentDetails[0]);
   const [references, setReferences] = useState([]);
@@ -221,6 +243,7 @@ export default function App() {
         {viewMode === 'atelier' && (
           <nav className="topnav" aria-label="Main navigation">
             <button className="nav-link active" onClick={enterAtelier}>Atelier</button>
+            <button className="nav-link" onClick={openScanner}>3D Scanner</button>
             <button className="nav-link" onClick={openSizing}>Sizing</button>
             <button className="nav-link" onClick={() => { setWizardOpen(false); setCheckoutOpen(false); setInfo('Tailors'); }}>Tailors</button>
             <button className="nav-link" onClick={openCheckout}>Checkout</button>
@@ -252,6 +275,7 @@ export default function App() {
         <LandingPage
           enterAtelier={enterAtelier}
           openSizing={openSizing}
+          openScanner={openScanner}
           currency={currency}
           setCurrency={setCurrency}
           currencies={currencies}
@@ -530,6 +554,16 @@ export default function App() {
           )}
         </aside>
       )}
+
+      <BodyScannerModal
+        isOpen={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        onApplyScan={handleApplyScan}
+        onTrigger3DGeneration={(scannedFiles) => {
+          setReferences(scannedFiles);
+          enterAtelier();
+        }}
+      />
     </div>
   );
 }

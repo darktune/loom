@@ -93,7 +93,7 @@ const workflowSteps = [
   },
 ];
 
-export default function LandingPage({ enterAtelier, openSizing, currency, setCurrency, currencies }) {
+export default function LandingPage({ enterAtelier, openSizing, openScanner, currency, setCurrency, currencies }) {
   const [activeTab, setActiveTab] = useState('showroom');
   const currentFeature = features.find((f) => f.id === activeTab) || features[0];
 
@@ -116,6 +116,9 @@ export default function LandingPage({ enterAtelier, openSizing, currency, setCur
           <div className="landing-cta-row">
             <button className="primary-button landing-cta" type="button" onClick={enterAtelier}>
               Enter 3D Atelier
+            </button>
+            <button className="primary-button landing-cta scanner-cta-btn" type="button" onClick={openScanner} style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', border: 'none' }}>
+              ✨ 3D Body Scanner
             </button>
             <button className="ghost-button landing-cta" type="button" onClick={openSizing}>
               Custom Fit Wizard
