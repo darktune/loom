@@ -170,5 +170,6 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   try { process.loadEnvFile(); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   const port = Number(process.env.PORT || process.env.GENERATION_PORT || 3001);
   const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1';
-  createGenerationServer({ key: process.env.TRIPO_API_KEY || '' }).listen(port, host, () => console.log(`Loom generation API: http://${host}:${port} (${process.env.TRIPO_API_KEY ? 'Tripo configured' : 'API key needed'})`));
+  const tripoKey = process.env.TRIPO3D_API_KEY || process.env.TRIPO_API_KEY || '';
+  createGenerationServer({ key: tripoKey }).listen(port, host, () => console.log(`Loom generation API: http://${host}:${port} (${tripoKey ? 'Tripo configured' : 'API key needed'})`));
 }
