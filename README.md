@@ -35,6 +35,19 @@
 
 ---
 
+## Team Role Split
+
+- **Backend & Escrow Systems**: Kora Pay API, escrow state management, webhooks, and payment reliability.
+- **Frontend & UI/UX**: React/Vite storefront, responsive customer flows, checkout experience, and visual design.
+- **3D Graphics & AI**: React Three Fiber showroom, garment viewer, AI sizing, concept generation, and 3D synchronization.
+
+## Technical Documentation
+
+- [3D Engine Integration Spec](docs/3D_ENGINE_INTEGRATION_SPEC.md)
+- [Audit and QA Report](docs/AUDIT_REPORT.md)
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
